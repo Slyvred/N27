@@ -5,6 +5,9 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <chrono>
+#include <fstream>
+#include <string>
 #include "json.hpp"
 #include "user.h"
 
@@ -16,6 +19,7 @@ using namespace std;
 typedef struct Transaction {
     int from_acc, to_acc;
     float amount;
+    long timestamp;
 }transaction;
 
 
@@ -44,6 +48,7 @@ public:
     const unordered_map<int, user>& getUsers() const;
     const unordered_map<int, account>& getAccounts() const;
 
+    void update();
 };
 
 

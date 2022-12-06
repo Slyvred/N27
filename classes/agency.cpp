@@ -3,8 +3,6 @@
 //
 
 #include "agency.h"
-#include <fstream>
-#include <string>
 using json = nlohmann::json;
 
 agency::agency() {
@@ -65,6 +63,15 @@ void agency::send(int from_acc, int to_acc, float amount) {
     accounts.at(to_acc).setSolde(accounts.at(to_acc).getSolde() + amount);
 
     // On ajoute le virement dans l'historique de transactions
+    transaction transac;
+    transac.amount = amount;
+    transac.from_acc = from_acc;
+    transac.to_acc = to_acc;
+
+    // Ici, on calcule le timestamp de la transaction pour savoir à quel moment elle a eu lieu
+    const auto timestamp = chrono::system_clock::now();
+    transac.timestamp = chrono::duration_cast<chrono::seconds>(timestamp.time_since_epoch()).count();
+
     transactions.push_back({from_acc, to_acc, amount});
 }
 
@@ -105,7 +112,7 @@ void agency::exportUsers() const {
                 i++;
             }
         }
-        file << setw(4) << user << endl;
+        file << setw(2) << user << endl;
         file.close();
     }
     else
@@ -137,7 +144,7 @@ void agency::exportAcounts() const {
             account["id"][str_num]["id"] = acc.getId();
         }
 
-        file << setw(4) << account << endl;
+        file << setw(2) << account << endl;
         file.close();
     }
     else
@@ -187,4 +194,20 @@ void agency::importUsers() {
         n_users++;
         users.insert({num, tmp});
     }
+}
+
+bool isTooOld(transaction& tr)
+{
+    const long threshold = 172800;
+    const auto timestamp = chrono::system_clock::now();
+    auto timestamp_sec = chrono::duration_cast<chrono::seconds>(timestamp.time_since_epoch()).count();
+
+    return (tr.timestamp - timestamp_sec) >= threshold;
+}
+
+void agency::update() {
+    // Si la transaction a 48 heures ou plus on la supprime
+    transactions.erase(remove_if(transactions.begin(), transactions.end(), isTooOld), transactions.end());
+
+    // Ajouter communication avec les autres agences
 }

@@ -10,10 +10,10 @@ int main() {
 
     agency agenceCentrale;
 
-    infos inf = {"Hage", "Rémi", "ISEN Lille"};
+    infos inf = {"Doe", "John", "Zaza street"};
 
-    for (int i = 0; i < 100; ++i)
-        agenceCentrale.createUser(inf, rand() % 5);
+    for (int i = 0; i < 4; ++i)
+        agenceCentrale.createUser(inf, rand() % 3);
 
     for (auto& [key, value] : agenceCentrale.getUsers()) {
         cout << value << endl;
