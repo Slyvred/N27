@@ -50,7 +50,7 @@ void agency::deleteUser(int id) {
 
 void agency::send(int from_acc, int to_acc, float amount) {
 
-    // ONn vérifie que les comptes sont valides
+    // On vérifie que les comptes sont valides
     if (accounts.find(from_acc) == accounts.end() || accounts.find(to_acc) == accounts.end())
         return;
 
@@ -72,7 +72,30 @@ void agency::send(int from_acc, int to_acc, float amount) {
     const auto timestamp = chrono::system_clock::now();
     transac.timestamp = chrono::duration_cast<chrono::seconds>(timestamp.time_since_epoch()).count();
 
-    transactions.push_back({from_acc, to_acc, amount});
+    transactions.push_back(transac);
+}
+
+void agency::deposit(int to_acc, float amount) {
+    // On vérifie que les comptes sont valides
+    if (accounts.find(to_acc) == accounts.end())
+        return;
+
+
+    auto solde = accounts.at(to_acc).getSolde();
+    accounts.at(to_acc).setSolde(solde + amount);
+
+    // On ajoute le virement dans l'historique de transactions
+    transaction transac;
+    transac.amount = amount;
+    transac.from_acc = to_acc;
+    transac.to_acc = to_acc;
+
+    // Ici, on calcule le timestamp de la transaction pour savoir à quel moment elle a eu lieu
+    const auto timestamp = chrono::system_clock::now();
+    transac.timestamp = chrono::duration_cast<chrono::seconds>(timestamp.time_since_epoch()).count();
+
+    transactions.push_back(transac);
+
 }
 
 const unordered_map<int, user> &agency::getUsers() const {

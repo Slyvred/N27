@@ -38,6 +38,7 @@ public:
     void deleteUser(int id);
     user& getuser(int id);
     void send(int from_acc, int to_acc, float amount);
+    void deposit(int to_acc, float amount);
 
     void exportUsers() const;
     void exportAcounts() const;
