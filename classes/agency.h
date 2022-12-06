@@ -36,18 +36,20 @@ public:
 
     void createUser(infos& infos, int n_accounts);
     void deleteUser(int id);
-    user& getuser(int id);
+    user& getUser(int id);
     void send(int from_acc, int to_acc, float amount);
     void deposit(int to_acc, float amount);
 
     void exportUsers() const;
     void exportAcounts() const;
+    void exportTransactions() const;
 
     void importUsers();
     void importAcounts();
 
     const unordered_map<int, user>& getUsers() const;
     const unordered_map<int, account>& getAccounts() const;
+    const vector<transaction>& getTransactions() const;
 
     void update();
 };

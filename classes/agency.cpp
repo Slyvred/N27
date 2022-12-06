@@ -37,7 +37,7 @@ void agency::createUser(infos &infos, int n_accounts) {
     users.insert({tmp.getId(), tmp});
 }
 
-user &agency::getuser(int id) {
+user &agency::getUser(int id) {
     auto index = users.find(id);
 
     return users.at(id);
@@ -95,7 +95,6 @@ void agency::deposit(int to_acc, float amount) {
     transac.timestamp = chrono::duration_cast<chrono::seconds>(timestamp.time_since_epoch()).count();
 
     transactions.push_back(transac);
-
 }
 
 const unordered_map<int, user> &agency::getUsers() const {
@@ -104,6 +103,10 @@ const unordered_map<int, user> &agency::getUsers() const {
 
 const unordered_map<int, account> &agency::getAccounts() const {
     return accounts;
+}
+
+const vector<transaction> &agency::getTransactions() const {
+    return transactions;
 }
 
 void agency::exportUsers() const {
@@ -165,6 +168,34 @@ void agency::exportAcounts() const {
             account["id"][str_num]["interests"] = acc.getInterets();
             account["id"][str_num]["solde"] = acc.getSolde();
             account["id"][str_num]["id"] = acc.getId();
+        }
+
+        file << setw(2) << account << endl;
+        file.close();
+    }
+    else
+    {
+        cerr << "Couldn't open file ! " << endl;
+    }
+}
+
+void agency::exportTransactions() const {
+    ofstream file("T" + to_string(id) + ".json");
+
+    if (file.is_open())
+    {
+        json account;
+
+        for (auto& it: transactions)
+        {
+            auto str_num = to_string(it.from_acc);
+
+            //cout << num << endl;
+            //cout << acc << endl;
+
+            account["id"][str_num]["toAcc"] = it.to_acc;
+            account["id"][str_num]["amount"] = it.amount;
+            account["id"][str_num]["timestamp"] = it.timestamp;
         }
 
         file << setw(2) << account << endl;

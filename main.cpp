@@ -8,23 +8,29 @@ int main() {
     // Désactivé pour la version dev
     //srand(time(NULL));
 
+    // ZONE DE TESTS
     agency agenceCentrale;
 
     infos inf = {"Doe", "John", "Zaza street"};
 
     for (int i = 0; i < 4; ++i)
-        agenceCentrale.createUser(inf, rand() % 3);
+        agenceCentrale.createUser(inf, rand() % 3 + 1);
 
-    for (auto& [key, value] : agenceCentrale.getUsers()) {
-        cout << value << endl;
+    /*
+    for (auto& [num, usr] : agenceCentrale.getUsers()) {
+        cout << usr << endl;
         //value.exportJson();
-    }
+    }*/
     for (auto& [num, acc] : agenceCentrale.getAccounts()) {
-        cout << acc << endl;
+        agenceCentrale.deposit(num, rand() % 1000 + 300);
+        //cout << acc << endl;
     }
+
+    agenceCentrale.send(agenceCentrale.getUser(1681692777).getAccount(0), agenceCentrale.getUser(2044897763).getAccount(0), 300);
 
     agenceCentrale.exportUsers();
     agenceCentrale.exportAcounts();
+    agenceCentrale.exportTransactions();
     //agenceCentrale.importUsers();
     //agenceCentrale.importAcounts();
 
@@ -34,5 +40,6 @@ int main() {
     for (auto& [num, acc] : agenceCentrale.getAccounts()) {
         cout << acc << endl;
     }
+    //
     return EXIT_SUCCESS;
 }
