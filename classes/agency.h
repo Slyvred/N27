@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <iostream>
+#include <vector>
 #include <unordered_map>
 #include "json.hpp"
 #include "user.h"
@@ -12,11 +13,17 @@ using namespace std;
 #ifndef N27_AGENCY_H
 #define N27_AGENCY_H
 
+typedef struct Transaction {
+    int from_acc, to_acc;
+    float amount;
+}transaction;
+
 
 class agency {
 private:
     unordered_map<int, user> users;
     unordered_map<int, account> accounts;
+    vector<transaction> transactions;
     int id;
     int n_users;
 public:

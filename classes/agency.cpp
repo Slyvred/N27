@@ -52,15 +52,20 @@ void agency::deleteUser(int id) {
 
 void agency::send(int from_acc, int to_acc, float amount) {
 
+    // ONn vérifie que les comptes sont valides
     if (accounts.find(from_acc) == accounts.end() || accounts.find(to_acc) == accounts.end())
         return;
 
+    // On vérifie que le solde permet le virement
     auto solde = accounts.at(from_acc).getSolde();
-    if (solde >= amount)
-    {
-        accounts.at(from_acc).setSolde(solde - amount);
-        accounts.at(to_acc).setSolde(accounts.at(to_acc).getSolde() + amount);
-    }
+    if (solde < amount) return;
+
+    // On effectue le virement
+    accounts.at(from_acc).setSolde(solde - amount);
+    accounts.at(to_acc).setSolde(accounts.at(to_acc).getSolde() + amount);
+
+    // On ajoute le virement dans l'historique de transactions
+    transactions.push_back({from_acc, to_acc, amount});
 }
 
 const unordered_map<int, user> &agency::getUsers() const {

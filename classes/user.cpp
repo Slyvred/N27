@@ -12,15 +12,6 @@ using json = nlohmann::json;
 // Constructeur réduit, la plus grande partie se fait dans agency::createUser
 user::user(infos& infos, int n_accounts) : m_infos(infos), n_accounts(n_accounts){
     id = rand();
-    /*
-    for (int i = 0; i < n_accounts; ++i) {
-        auto tmp = account(1, 0);
-
-        while (accounts.find(tmp.getId()) != accounts.end())
-            tmp.setId(rand());
-
-        this->accounts.insert({tmp.getId(), tmp});
-    }*/
 }
 
 int user::getId() const {
@@ -44,6 +35,7 @@ const int &user::getAccount(int index) const {
 }
 
 void user::addAccount(int id) {
+    // Si le compte n'existe pas déjà
     if (find(accounts.begin(), accounts.end(), id) == accounts.end())
         accounts.push_back(id);
 }
