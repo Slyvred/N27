@@ -200,6 +200,7 @@ void agency::exportTransactions() const {
             for (auto& it2 : transactions){
                 if (it2.from_acc != it.from_acc ) continue;
 
+                transac["id"][str_num][i]["fromAcc"] = it2.from_acc;
                 transac["id"][str_num][i]["toAcc"] = it2.to_acc;
                 transac["id"][str_num][i]["amount"] = it2.amount;
                 transac["id"][str_num][i]["timestamp"] = it2.timestamp;
@@ -254,6 +255,7 @@ void agency::importUsers() {
             tmp.addAccount(acc);
 
         tmp.setId(num);
+
         n_users++;
         users.insert({num, tmp});
     }
@@ -266,7 +268,15 @@ void agency::importTransactions() {
     transaction transac;
 
     for (auto &it : obj["id"]) {
-        cout << it << endl;
+        for (auto& it2: it) {
+            //cout << it2 << endl;
+            transac.amount = it2["amount"];
+            transac.from_acc = it2["fromAcc"];
+            transac.timestamp = it2["timestamp"];
+            transac.to_acc = it2["toAcc"];
+
+            transactions.push_back(transac);
+        }
     }
 }
 

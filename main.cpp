@@ -12,6 +12,7 @@ int main() {
     agency agenceCentrale;
 
 
+/*
     infos inf = {"Doe", "John", "Zaza street"};
 
     for (int i = 0; i < 4; ++i)
@@ -27,25 +28,33 @@ int main() {
         //cout << acc << endl;
     }
 
-    //agenceCentrale.send(agenceCentrale.getUser(1681692777).getAccount(0), agenceCentrale.getUser(2044897763).getAccount(0), 300);
-    //agenceCentrale.send(agenceCentrale.getUser(1681692777).getAccount(0), agenceCentrale.getUser(2044897763).getAccount(0), 50);
-    //agenceCentrale.send(agenceCentrale.getUser(2044897763).getAccount(0), agenceCentrale.getUser(1681692777).getAccount(0), 300);
-    //agenceCentrale.send(agenceCentrale.getUser(2044897763).getAccount(0), agenceCentrale.getUser(2044897763).getAccount(0), 50);
+    agenceCentrale.send(agenceCentrale.getUser(1681692777).getAccount(0), agenceCentrale.getUser(2044897763).getAccount(0), 300);
+    agenceCentrale.send(agenceCentrale.getUser(1681692777).getAccount(0), agenceCentrale.getUser(2044897763).getAccount(0), 50);
+    agenceCentrale.send(agenceCentrale.getUser(2044897763).getAccount(0), agenceCentrale.getUser(1681692777).getAccount(0), 300);
+    agenceCentrale.send(agenceCentrale.getUser(2044897763).getAccount(0), agenceCentrale.getUser(2044897763).getAccount(0), 50);
 
 
     agenceCentrale.exportUsers();
     agenceCentrale.exportAcounts();
-    agenceCentrale.send(agenceCentrale.getUser(2044897763).getAccount(0), agenceCentrale.getUser(1681692777).getAccount(0), 500);
-    agenceCentrale.exportTransactions();
-    //agenceCentrale.importUsers();
-    //agenceCentrale.importAcounts();
-    //agenceCentrale.importTransactions();
+    agenceCentrale.exportTransactions();*/
+
+
+    agenceCentrale.importUsers();
+    agenceCentrale.importAcounts();
+    agenceCentrale.importTransactions();
 
     for (auto& [id, usr] : agenceCentrale.getUsers()) {
         cout << usr << endl;
     }
     for (auto& [num, acc] : agenceCentrale.getAccounts()) {
         cout << acc << endl;
+    }
+    for (auto& it : agenceCentrale.getTransactions()) {
+        cout << "from_acc: " << it.from_acc << endl;
+        cout << "to_acc: " << it.to_acc << endl;
+        cout << "amount: " << it.amount << endl;
+        cout << "timestamp: " << it.timestamp << endl;
+        cout << "---------------------" << endl;
     }
     //
     return EXIT_SUCCESS;
