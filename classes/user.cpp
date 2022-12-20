@@ -43,7 +43,6 @@ void user::addAccount(int id) {
 ostream& operator<<(ostream& os, const user& user)
 {
     auto infos = user.getInfos();
-    os << "--------------------" << endl;
     os << "Nom: " << infos.nom << endl;
     os << "Prénom: " << infos.prenom << endl;
     os << "Adresse: " << infos.addr << endl;
@@ -53,5 +52,6 @@ ostream& operator<<(ostream& os, const user& user)
     for (auto& it : user.getAccounts())
         os << it << endl;
 
+    os << "--------------------" << endl;
     return os;
 }

@@ -38,5 +38,6 @@ ostream& operator<<(ostream& os, const account& acc)
     os << "Numéro: " << acc.getId() << endl;
     os << "Solde: " << acc.getSolde() << endl;
     os << "Intérêts: " << acc.getInterets() << endl;
+    os << "--------------------" << endl;
     return os;
 }

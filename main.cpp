@@ -12,7 +12,7 @@ int main() {
     agency agenceCentrale;
 
 
-/*
+
     infos inf = {"Doe", "John", "Zaza street"};
 
     for (int i = 0; i < 4; ++i)
@@ -36,12 +36,12 @@ int main() {
 
     agenceCentrale.exportUsers();
     agenceCentrale.exportAcounts();
-    agenceCentrale.exportTransactions();*/
+    agenceCentrale.exportTransactions();
 
 
-    agenceCentrale.importUsers();
+    /*agenceCentrale.importUsers();
     agenceCentrale.importAcounts();
-    agenceCentrale.importTransactions();
+    agenceCentrale.importTransactions();*/
 
     for (auto& [id, usr] : agenceCentrale.getUsers()) {
         cout << usr << endl;
