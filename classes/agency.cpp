@@ -70,7 +70,7 @@ void agency::send(int from_acc, int to_acc, float amount) {
 
     // Ici, on calcule le timestamp de la transaction pour savoir à quel moment elle a eu lieu
     const auto timestamp = chrono::system_clock::now();
-    transac.timestamp = chrono::duration_cast<chrono::seconds>(timestamp.time_since_epoch()).count();
+    transac.timestamp = chrono::duration_cast<chrono::microseconds>(timestamp.time_since_epoch()).count();
 
     transactions.push_back(transac);
 }
@@ -92,7 +92,7 @@ void agency::deposit(int to_acc, float amount) {
 
     // Ici, on calcule le timestamp de la transaction pour savoir à quel moment elle a eu lieu
     const auto timestamp = chrono::system_clock::now();
-    transac.timestamp = chrono::duration_cast<chrono::seconds>(timestamp.time_since_epoch()).count();
+    transac.timestamp = chrono::duration_cast<chrono::microseconds>(timestamp.time_since_epoch()).count();
 
     transactions.push_back(transac);
 }
@@ -184,21 +184,39 @@ void agency::exportTransactions() const {
 
     if (file.is_open())
     {
-        json account;
+        json transac;
 
         for (auto& it: transactions)
         {
             auto str_num = to_string(it.from_acc);
+            //auto str_timestamp = to_string(it.timestamp);
+
+            //auto n_transac = count(transactions.begin(), transactions.end(), [&it](transaction tmp){return tmp.from_acc == it.from_acc;});
+            auto n_transac = std::count_if(transactions.begin(), transactions.end(),[&it](transaction tmp){return tmp.from_acc == it.from_acc;});
+            cout << n_transac << endl;
+            cout << "from_acc: " << it.from_acc << endl;
+            cout << "to_acc: " << it.to_acc << endl;
+            cout << "amount: " << it.amount << endl;
+            cout << "timestamp: " << it.timestamp << endl;
 
             //cout << num << endl;
             //cout << acc << endl;
 
-            account["id"][str_num]["toAcc"] = it.to_acc;
-            account["id"][str_num]["amount"] = it.amount;
-            account["id"][str_num]["timestamp"] = it.timestamp;
+            /*
+            transac["id"][str_num]["toAcc"] = it.to_acc;
+            transac["id"][str_num]["amount"] = it.amount;
+            transac["id"][str_num]["timestamp"] = it.timestamp;*/
+
+            for (auto i = 0; i < n_transac; i++)
+            {
+                transac["id"][str_num][i]["amount"] = it.amount;
+                transac["id"][str_num][i]["toAcc"] = it.to_acc;
+                transac["id"][str_num][i]["timestamp"] = it.timestamp;
+            }
+            transac["id"][str_num]["n_transac"] = n_transac;
         }
 
-        file << setw(2) << account << endl;
+        file << setw(2) << transac << endl;
         file.close();
     }
     else
@@ -213,6 +231,7 @@ void agency::importAcounts() {
     json obj = json::parse(file);
 
     for (auto &it : obj["id"]) {
+        cout << it << endl;
         auto id = it["id"];
         auto interets = it["interests"];
         auto solde = it["solde"];
@@ -232,7 +251,6 @@ void agency::importUsers() {
 
     for (auto &it : obj["id"]) {
         cout << it << endl;
-
         inf.addr = it["infos"]["adresse"];
         inf.nom = it["infos"]["nom"];
         inf.prenom = it["infos"]["prenom"];
@@ -250,11 +268,23 @@ void agency::importUsers() {
     }
 }
 
+void agency::importTransactions() {
+    string filename = "T" + to_string(id) + ".json";
+    ifstream file(filename);
+    json obj = json::parse(file);
+    transaction transac;
+
+    for (auto &it : obj["id"]) {
+        cout << it << endl;
+    }
+}
+
+// Nous dit si la transaction a plus de 48h
 bool isTooOld(transaction& tr)
 {
-    const long threshold = 172800;
+    const long threshold = 172800000000; // 48h en microsecs
     const auto timestamp = chrono::system_clock::now();
-    auto timestamp_sec = chrono::duration_cast<chrono::seconds>(timestamp.time_since_epoch()).count();
+    auto timestamp_sec = chrono::duration_cast<chrono::microseconds>(timestamp.time_since_epoch()).count();
 
     return (tr.timestamp - timestamp_sec) >= threshold;
 }

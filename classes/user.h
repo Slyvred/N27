@@ -33,10 +33,6 @@ public:
     const int& getAccount(int index) const;
     void addAccount(int id);
     friend ostream& operator<<(ostream& os, const user& user);
-
-    // Inutilisées
-    void exportJson() const;
-    void importJson(int id);
 };
 
 

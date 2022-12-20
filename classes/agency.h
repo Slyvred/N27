@@ -46,6 +46,7 @@ public:
 
     void importUsers();
     void importAcounts();
+    void importTransactions();
 
     const unordered_map<int, user>& getUsers() const;
     const unordered_map<int, account>& getAccounts() const;
