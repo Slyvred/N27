@@ -70,7 +70,7 @@ void agency::send(int from_acc, int to_acc, float amount) {
 
     // Ici, on calcule le timestamp de la transaction pour savoir à quel moment elle a eu lieu
     const auto timestamp = chrono::system_clock::now();
-    transac.timestamp = chrono::duration_cast<chrono::microseconds>(timestamp.time_since_epoch()).count();
+    transac.timestamp = chrono::duration_cast<chrono::seconds>(timestamp.time_since_epoch()).count();
 
     transactions.push_back(transac);
 }
@@ -92,7 +92,7 @@ void agency::deposit(int to_acc, float amount) {
 
     // Ici, on calcule le timestamp de la transaction pour savoir à quel moment elle a eu lieu
     const auto timestamp = chrono::system_clock::now();
-    transac.timestamp = chrono::duration_cast<chrono::microseconds>(timestamp.time_since_epoch()).count();
+    transac.timestamp = chrono::duration_cast<chrono::seconds>(timestamp.time_since_epoch()).count();
 
     transactions.push_back(transac);
 }
@@ -186,34 +186,25 @@ void agency::exportTransactions() const {
     {
         json transac;
 
-        for (auto& it: transactions)
-        {
+        for (auto& it: transactions) {
             auto str_num = to_string(it.from_acc);
-            //auto str_timestamp = to_string(it.timestamp);
-
-            //auto n_transac = count(transactions.begin(), transactions.end(), [&it](transaction tmp){return tmp.from_acc == it.from_acc;});
-            auto n_transac = std::count_if(transactions.begin(), transactions.end(),[&it](transaction tmp){return tmp.from_acc == it.from_acc;});
-            cout << n_transac << endl;
+            //auto n_transac = std::count_if(transactions.begin(), transactions.end(),[&it](transaction tmp){return tmp.from_acc == it.from_acc;});
+            //transac["id"][str_num]["n_transac"] = to_string(n_transac);
+            /*cout << n_transac << endl;
             cout << "from_acc: " << it.from_acc << endl;
             cout << "to_acc: " << it.to_acc << endl;
             cout << "amount: " << it.amount << endl;
-            cout << "timestamp: " << it.timestamp << endl;
+            cout << "timestamp: " << it.timestamp << endl;*/
 
-            //cout << num << endl;
-            //cout << acc << endl;
+            int i = 0;
+            for (auto& it2 : transactions){
+                if (it2.from_acc != it.from_acc ) continue;
 
-            /*
-            transac["id"][str_num]["toAcc"] = it.to_acc;
-            transac["id"][str_num]["amount"] = it.amount;
-            transac["id"][str_num]["timestamp"] = it.timestamp;*/
-
-            for (auto i = 0; i < n_transac; i++)
-            {
-                transac["id"][str_num][i]["amount"] = it.amount;
-                transac["id"][str_num][i]["toAcc"] = it.to_acc;
-                transac["id"][str_num][i]["timestamp"] = it.timestamp;
+                transac["id"][str_num][i]["toAcc"] = it2.to_acc;
+                transac["id"][str_num][i]["amount"] = it2.amount;
+                transac["id"][str_num][i]["timestamp"] = it2.timestamp;
+                i++;
             }
-            transac["id"][str_num]["n_transac"] = n_transac;
         }
 
         file << setw(2) << transac << endl;
@@ -282,9 +273,9 @@ void agency::importTransactions() {
 // Nous dit si la transaction a plus de 48h
 bool isTooOld(transaction& tr)
 {
-    const long threshold = 172800000000; // 48h en microsecs
+    const long threshold = 172800; // 48h en microsecs
     const auto timestamp = chrono::system_clock::now();
-    auto timestamp_sec = chrono::duration_cast<chrono::microseconds>(timestamp.time_since_epoch()).count();
+    auto timestamp_sec = chrono::duration_cast<chrono::seconds>(timestamp.time_since_epoch()).count();
 
     return (tr.timestamp - timestamp_sec) >= threshold;
 }
