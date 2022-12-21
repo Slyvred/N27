@@ -13,7 +13,6 @@ void handle_write(const boost::system::error_code &error, size_t bytes_transferr
 {
     if (error)
     {
-        // Gérez l'erreur
         std::cerr << "Erreur lors de l'envoi du fichier";
     }
 }
