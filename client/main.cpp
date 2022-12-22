@@ -1,8 +1,8 @@
 #include <iostream>
-#include "classes/account.h"
-#include "classes/agency.h"
-#include "classes/user.h"
-#include "classes/socket.h"
+#include "../classes/account.h"
+#include "../classes/agency.h"
+#include "../classes/user.h"
+#include "../classes/socket.h"
 
 int main()
 {
