@@ -12,6 +12,7 @@
 #include "user.h"
 
 using namespace std;
+using json = nlohmann::json;
 
 #ifndef N27_AGENCY_H
 #define N27_AGENCY_H
@@ -40,9 +41,10 @@ public:
     void send(int from_acc, int to_acc, float amount);
     void deposit(int to_acc, float amount);
 
-    void exportUsers() const;
-    void exportAcounts() const;
-    void exportTransactions() const;
+    json exportUsers() const;
+    json exportAcounts() const;
+    json exportTransactions() const;
+    int getId() const;
 
     void importUsers();
     void importAcounts();

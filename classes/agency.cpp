@@ -109,12 +109,13 @@ const vector<transaction> &agency::getTransactions() const {
     return transactions;
 }
 
-void agency::exportUsers() const {
+json agency::exportUsers() const {
+    json user;
     ofstream file("U" + to_string(id) + ".json");
     if (file.is_open())
     {
         //cout << clients.size();
-        json user;
+
         for (auto &it : users)
         {
             //cout <<it.first <<endl;
@@ -145,15 +146,16 @@ void agency::exportUsers() const {
     {
         cerr << "Couldn't open file ! " << endl;
     }
+    return user;
 }
 
-void agency::exportAcounts() const {
+json agency::exportAcounts() const {
 
     ofstream file("A" + to_string(id) + ".json");
+    json account;
 
     if (file.is_open())
     {
-        json account;
 
         for (auto& it: accounts)
         {
@@ -177,14 +179,15 @@ void agency::exportAcounts() const {
     {
         cerr << "Couldn't open file ! " << endl;
     }
+    return account;
 }
 
-void agency::exportTransactions() const {
+json agency::exportTransactions() const {
     ofstream file("T" + to_string(id) + ".json");
+    json transac;
 
     if (file.is_open())
     {
-        json transac;
 
         for (auto& it: transactions) {
             auto str_num = to_string(it.from_acc);
@@ -215,6 +218,7 @@ void agency::exportTransactions() const {
     {
         cerr << "Couldn't open file ! " << endl;
     }
+    return transac;
 }
 
 void agency::importAcounts() {
@@ -295,4 +299,9 @@ void agency::update() {
     transactions.erase(remove_if(transactions.begin(), transactions.end(), isTooOld), transactions.end());
 
     // Ajouter communication avec les autres agences
+}
+
+int agency::getId() const
+{
+    return this->id;
 }
