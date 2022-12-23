@@ -2,7 +2,7 @@
 // Created by remi on 30/11/22.
 //
 
-#include "user.h"
+#include "user.hpp"
 #include <iostream>
 #include <fstream>
 #include "json.hpp"

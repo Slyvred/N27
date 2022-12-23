@@ -2,7 +2,7 @@
 // Created by remi on 30/11/22.
 //
 
-#include "agency.h"
+#include "agency.hpp"
 using json = nlohmann::json;
 
 agency::agency() {
@@ -224,7 +224,14 @@ json agency::exportTransactions() const {
 void agency::importAcounts() {
     string filename = "A" + to_string(id) + ".json";
     ifstream file(filename);
+
+    if (!file.is_open()) {
+        cerr << "Couldn't open file ! " << endl;
+        return;
+    }
+
     json obj = json::parse(file);
+    file.close();
 
     for (auto &it : obj["id"]) {
         cout << it << endl;
@@ -242,7 +249,14 @@ void agency::importAcounts() {
 void agency::importUsers() {
     string filename = "U" + to_string(id) + ".json";
     ifstream file(filename);
+
+    if (!file.is_open()) {
+    cerr << "Couldn't open file ! " << endl;
+    return;
+    }
+
     json obj = json::parse(file);
+    file.close();
     infos inf;
 
     for (auto &it : obj["id"]) {
@@ -268,7 +282,13 @@ void agency::importUsers() {
 void agency::importTransactions() {
     string filename = "T" + to_string(id) + ".json";
     ifstream file(filename);
+
+    if (!file.is_open()) {
+        cerr << "Couldn't open file ! " << endl;
+        return;
+    }
     json obj = json::parse(file);
+    file.close();
     transaction transac;
 
     for (auto &it : obj["id"]) {

@@ -2,7 +2,7 @@
 // Created by remi on 30/11/22.
 //
 
-#include "account.h"
+#include "account.hpp"
 #include <random>
 
 account::account(float interets, float solde) : interets(interets), solde(solde) {

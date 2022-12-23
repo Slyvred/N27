@@ -88,6 +88,9 @@ class Server
   std::list<Connection> m_connections;
   using con_handle_t = std::list<Connection>::iterator;
 
+private:
+  static std::string file;
+
 public:
   Server() : m_ioservice(), m_acceptor(m_ioservice), m_connections() {}
 
@@ -102,7 +105,7 @@ public:
 
       if (line.find("{") == std::string::npos) // Si c'est pas du json
       {
-        filename = line + ".json";
+        filename = "data/" + line + ".json";
         std::cout << "Création du fichier: " << filename << std::endl;
       }
       else
@@ -142,12 +145,10 @@ public:
     if (!err)
     {
       std::cout << "Envoi du message terminé\n";
-      if (con_handle->socket.is_open())
+      /*if (con_handle->socket.is_open())
       {
         // Write completed successfully and connection is open
-        
-
-      }
+      }*/
     }
     else
     {
@@ -163,7 +164,8 @@ public:
       //std::cout << "Connection from: " << con_handle->socket().remote_endpoint().address().to_string() << "\n";
       std::cout << "Envoi du message\n";
       json msg = {{"key", "value"}};
-      auto buff = std::make_shared<std::string>(msg.dump() + '\n');
+
+      auto buff = std::make_shared<std::string>(msg.dump() + "\n");
       auto handler = boost::bind(&Server::handle_write, this, con_handle, buff, boost::asio::placeholders::error);
       boost::asio::async_write(con_handle->socket, boost::asio::buffer(*buff), handler);
       do_async_read(con_handle);
@@ -191,6 +193,7 @@ public:
     m_acceptor.bind(endpoint);
     m_acceptor.listen();
     start_accept();
+    std::cout << "Serveur en écoute sur le port " << port << std::endl;
   }
 
   void run()
