@@ -6,6 +6,8 @@
 #include "../classes/user.hpp"
 #include "../classes/socket.hpp"
 
+
+// Fonction update
 void update(agency& agence)
 {
     time_t currentTime;
@@ -18,6 +20,8 @@ void update(agency& agence)
         // bool sent = false;
 
         //if (localTime->tm_hour != 18 || localTime->tm_min != 4 || localTime->tm_sec != 0) continue;
+
+        agence.update();
 
         Client client("localhost", "8080");
         client.Connect();
@@ -42,25 +46,49 @@ void update(agency& agence)
     }
 }
 
+
+// Vu que nous n'avons pas d'interface on passe en CLI en attendant
 void doWork(agency& agence)
 {
     string input;
     while (input != "END")
     {
-        cout << "Enter a command: ";
+        cout << ">>> ";
         cin >> input;
 
         if (input == "send")
         {
             float amount = 100;
-            agence.send(agence.getUser(1025202362).getAccount(0), agence.getUser(1681692777).getAccount(0), amount);
-            cout << "Sent " << amount << "$ to"  << "1681692777" << endl;
+
+
+            // Implémentation de test absolument atroce
+            for (auto& [id, usr] : agence.getUsers())
+            {
+                for (auto& [id2, usr2] : agence.getUsers())
+                {
+                    if (id2 == id) continue;
+                    
+                    agence.send(agence.getUser(id).getAccount(0), agence.getUser(id2).getAccount(0), amount);
+                    break;
+                }
+                break;
+            }
+
+            //agence.send(agence.getUser(1025202362).getAccount(0), agence.getUser(1681692777).getAccount(0), amount);
+            cout << "Sent " << amount << "$" << endl;
         }
         else if (input == "deposit")
         {
             float amount = 1000;
-            agence.deposit(agence.getUser(1025202362).getAccount(0), amount);
-            cout << "Deposited " << amount << "$ to " << "1025202362" << endl;
+
+            // Implémentation de test absolument atroce
+            for (auto& [id, usr] : agence.getUsers())
+            {
+                agence.deposit(agence.getUser(id).getAccount(0), amount);
+                break;
+            }
+            //agence.deposit(agence.getUser(1025202362).getAccount(0), amount);
+            cout << "Deposited " << amount << "$" << endl;
         }
     }
 }
@@ -69,7 +97,7 @@ int main()
 {
 
     // Désactivé pour la version dev
-    //srand(time(NULL));
+    srand(time(NULL));
 
     // ZONE DE TESTS
     agency agence;

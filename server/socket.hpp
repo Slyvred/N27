@@ -102,14 +102,16 @@ public:
       std::istream is(&con_handle->read_buffer);
       std::string line;
       static std::string filename;
+      static std::string agency_id;
       std::getline(is, line);
 
       if (line.find("{") == std::string::npos) // Si c'est pas du json
       {
-        if (!filesystem::exists("./data/"))
-          filesystem::create_directories("./data/");
-          
-        filename = "data/" + line + ".json";
+        agency_id = line.substr(1);
+        if (!filesystem::exists("./data/" + agency_id + "/"))
+          filesystem::create_directories("./data/" + agency_id + "/");
+
+        filename = "data/" + agency_id + "/" + line + ".json";
         std::cout << "Création du fichier: " << filename << std::endl;
       }
       else

@@ -17,6 +17,9 @@ typedef struct Infos {
     string nom, prenom, addr;
 }infos;
 
+// bool operator==(const infos& lhs, const infos& rhs) {
+//   return lhs.nom == rhs.nom && lhs.prenom == rhs.prenom && lhs.addr == rhs.addr;
+// }
 
 class user {
 private:

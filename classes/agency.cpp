@@ -3,6 +3,7 @@
 //
 
 #include "agency.hpp"
+#include "socket.hpp"
 using json = nlohmann::json;
 
 agency::agency() {
@@ -40,11 +41,15 @@ void agency::createUser(infos &infos, int n_accounts) {
 user &agency::getUser(int id) {
     auto index = users.find(id);
 
-    return users.at(id);
+    infos inf = {"none", "none", "none"};
+    user tmp(inf, 0);
+
+    return (index == users.end()) ? tmp : users.at(id);
 }
 
 void agency::deleteUser(int id) {
-    if (users.find(id) != users.end()) users.erase(id);
+    if (users.find(id) == users.end()) return;
+    users.erase(id);
     n_users--;
 }
 
@@ -262,7 +267,7 @@ void agency::importAcounts() {
 void agency::importUsers() {
     if (!filesystem::exists("./data/"))
         filesystem::create_directories("./data/");
-        
+
     string filename = "data/U" + to_string(id) + ".json";
     ifstream file(filename);
 
@@ -338,8 +343,6 @@ bool isTooOld(transaction& tr)
 void agency::update() {
     // Si la transaction a 48 heures ou plus on la supprime
     transactions.erase(remove_if(transactions.begin(), transactions.end(), isTooOld), transactions.end());
-
-    // Ajouter communication avec les autres agences
 }
 
 int agency::getId() const

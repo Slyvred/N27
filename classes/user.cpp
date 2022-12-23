@@ -5,6 +5,7 @@
 #include "user.hpp"
 #include <iostream>
 #include <fstream>
+#include <exception>
 #include "json.hpp"
 using json = nlohmann::json;
 
@@ -31,7 +32,13 @@ const vector<int> &user::getAccounts() const {
 }
 
 const int &user::getAccount(int index) const {
-    return accounts[index];
+
+    // if (this->m_infos == (infos){"none", "none", "none"})
+    // {
+    //     return accounts[0];
+    // }
+
+    return (index < accounts.size()) ? accounts[index] : accounts[0];
 }
 
 void user::addAccount(int id) {
