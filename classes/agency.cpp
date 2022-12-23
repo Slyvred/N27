@@ -111,7 +111,11 @@ const vector<transaction> &agency::getTransactions() const {
 
 json agency::exportUsers() const {
     json user;
-    string filename = "U" + to_string(id) + ".json";
+
+    if (!filesystem::exists("./data/"))
+        filesystem::create_directories("./data/");
+
+    string filename = "data/U" + to_string(id) + ".json";
     ofstream file(filename);
     if (file.is_open())
     {
@@ -153,7 +157,10 @@ json agency::exportUsers() const {
 
 json agency::exportAccounts() const {
 
-    string filename = "A" + to_string(id) + ".json";
+    if (!filesystem::exists("./data/"))
+        filesystem::create_directories("./data/");
+
+    string filename = "data/A" + to_string(id) + ".json";
     ofstream file(filename);
     json account;
 
@@ -187,7 +194,11 @@ json agency::exportAccounts() const {
 }
 
 json agency::exportTransactions() const {
-    string filename = "T" + to_string(id) + ".json";
+
+    if (!filesystem::exists("./data/"))
+        filesystem::create_directories("./data/");
+
+    string filename = "data/T" + to_string(id) + ".json";
     ofstream file(filename);
     json transac;
 
@@ -220,7 +231,10 @@ json agency::exportTransactions() const {
 }
 
 void agency::importAcounts() {
-    string filename = "A" + to_string(id) + ".json";
+    if (!filesystem::exists("./data/"))
+        filesystem::create_directories("./data/");
+
+    string filename = "data/A" + to_string(id) + ".json";
     ifstream file(filename);
 
     if (!file.is_open()) {
@@ -246,7 +260,10 @@ void agency::importAcounts() {
 }
 
 void agency::importUsers() {
-    string filename = "U" + to_string(id) + ".json";
+    if (!filesystem::exists("./data/"))
+        filesystem::create_directories("./data/");
+        
+    string filename = "data/U" + to_string(id) + ".json";
     ifstream file(filename);
 
     if (!file.is_open()) {
@@ -280,7 +297,10 @@ void agency::importUsers() {
 }
 
 void agency::importTransactions() {
-    string filename = "T" + to_string(id) + ".json";
+    if (!filesystem::exists("./data/"))
+        filesystem::create_directories("./data/");
+
+    string filename = "data/T" + to_string(id) + ".json";
     ifstream file(filename);
 
     if (!file.is_open()) {

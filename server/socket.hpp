@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <list>
 #include <fstream>
+#include <filesystem>
 #include "../classes/json.hpp"
 
 using json = nlohmann::json;
@@ -105,6 +106,9 @@ public:
 
       if (line.find("{") == std::string::npos) // Si c'est pas du json
       {
+        if (!filesystem::exists("./data/"))
+          filesystem::create_directories("./data/");
+          
         filename = "data/" + line + ".json";
         std::cout << "Création du fichier: " << filename << std::endl;
       }
