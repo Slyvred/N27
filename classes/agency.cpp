@@ -111,7 +111,8 @@ const vector<transaction> &agency::getTransactions() const {
 
 json agency::exportUsers() const {
     json user;
-    ofstream file("U" + to_string(id) + ".json");
+    string filename = "U" + to_string(id) + ".json";
+    ofstream file(filename);
     if (file.is_open())
     {
         //cout << clients.size();
@@ -141,6 +142,7 @@ json agency::exportUsers() const {
         }
         file << setw(2) << user << endl;
         file.close();
+        cout << "Exported " << filename << endl;
     }
     else
     {
@@ -149,9 +151,10 @@ json agency::exportUsers() const {
     return user;
 }
 
-json agency::exportAcounts() const {
+json agency::exportAccounts() const {
 
-    ofstream file("A" + to_string(id) + ".json");
+    string filename = "A" + to_string(id) + ".json";
+    ofstream file(filename);
     json account;
 
     if (file.is_open())
@@ -174,6 +177,7 @@ json agency::exportAcounts() const {
 
         file << setw(2) << account << endl;
         file.close();
+        cout << "Exported " << filename << endl;
     }
     else
     {
@@ -183,7 +187,8 @@ json agency::exportAcounts() const {
 }
 
 json agency::exportTransactions() const {
-    ofstream file("T" + to_string(id) + ".json");
+    string filename = "T" + to_string(id) + ".json";
+    ofstream file(filename);
     json transac;
 
     if (file.is_open())
@@ -191,14 +196,6 @@ json agency::exportTransactions() const {
 
         for (auto& it: transactions) {
             auto str_num = to_string(it.from_acc);
-            //auto n_transac = std::count_if(transactions.begin(), transactions.end(),[&it](transaction tmp){return tmp.from_acc == it.from_acc;});
-            //transac["id"][str_num]["n_transac"] = to_string(n_transac);
-            /*cout << n_transac << endl;
-            cout << "from_acc: " << it.from_acc << endl;
-            cout << "to_acc: " << it.to_acc << endl;
-            cout << "amount: " << it.amount << endl;
-            cout << "timestamp: " << it.timestamp << endl;*/
-
             int i = 0;
             for (auto& it2 : transactions){
                 if (it2.from_acc != it.from_acc ) continue;
@@ -213,6 +210,7 @@ json agency::exportTransactions() const {
 
         file << setw(2) << transac << endl;
         file.close();
+        cout << "Exported " << filename << endl;
     }
     else
     {
@@ -244,6 +242,7 @@ void agency::importAcounts() {
 
         accounts.insert({id, tmp});
     }
+    cout << "Imported " << filename << endl;
 }
 
 void agency::importUsers() {
@@ -251,8 +250,8 @@ void agency::importUsers() {
     ifstream file(filename);
 
     if (!file.is_open()) {
-    cerr << "Couldn't open file ! " << endl;
-    return;
+        cerr << "Couldn't open file ! " << endl;
+        return;
     }
 
     json obj = json::parse(file);
@@ -277,6 +276,7 @@ void agency::importUsers() {
         n_users++;
         users.insert({num, tmp});
     }
+    cout << "Imported " << filename << endl;
 }
 
 void agency::importTransactions() {
@@ -302,6 +302,7 @@ void agency::importTransactions() {
             transactions.push_back(transac);
         }
     }
+    cout << "Imported " << filename << endl;
 }
 
 // Nous dit si la transaction a plus de 48h

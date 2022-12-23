@@ -1,15 +1,75 @@
 #include <iostream>
 #include <ctime>
+// #include <thread>
 #include "../classes/account.hpp"
 #include "../classes/agency.hpp"
 #include "../classes/user.hpp"
 #include "../classes/socket.hpp"
 
+void update(agency& agence)
+{
+    time_t currentTime;
+    struct tm *localTime;
+
+    while (true)
+    {
+        time(&currentTime);                   // Get the current time
+        localTime = localtime(&currentTime);  // Convert the current time to the local time
+        // bool sent = false;
+
+        //if (localTime->tm_hour != 18 || localTime->tm_min != 4 || localTime->tm_sec != 0) continue;
+
+        Client client("localhost", "8080");
+        client.Connect();
+
+        auto usr_obj = agence.exportUsers();
+        client.SendJSON("U" + to_string(agence.getId()), usr_obj); // Envoi user
+
+        auto tra_obj = agence.exportTransactions();
+        client.SendJSON("T" + to_string(agence.getId()), tra_obj); // Envoi transactions
+
+        auto acc_obj = agence.exportAccounts();
+        client.SendJSON("A" + to_string(agence.getId()), acc_obj); // Envoi accounts
+
+
+        // Obtenez la réponse envoyée par le serveur en appelant la fonction GetResponse de l'instance du client.
+        json response = client.GetResponse();
+        std::cout << "Received response: " << response.dump() << std::endl;
+
+        client.Close();
+        // sent = true;
+        sleep(10);
+    }
+}
+
+void doWork(agency& agence)
+{
+    string input;
+    while (input != "END")
+    {
+        cout << "Enter a command: ";
+        cin >> input;
+
+        if (input == "send")
+        {
+            float amount = 100;
+            agence.send(agence.getUser(1025202362).getAccount(0), agence.getUser(1681692777).getAccount(0), amount);
+            cout << "Sent " << amount << "$ to"  << "1681692777" << endl;
+        }
+        else if (input == "deposit")
+        {
+            float amount = 1000;
+            agence.deposit(agence.getUser(1025202362).getAccount(0), amount);
+            cout << "Deposited " << amount << "$ to " << "1025202362" << endl;
+        }
+    }
+}
+
 int main()
 {
 
     // Désactivé pour la version dev
-    srand(time(NULL));
+    //srand(time(NULL));
 
     // ZONE DE TESTS
     agency agence;
@@ -34,7 +94,7 @@ int main()
 
     // On exporte tout
     auto usr_obj = agence.exportUsers();
-    auto acc_obj = agence.exportAcounts();
+    auto acc_obj = agence.exportAccounts();
     auto tra_obj = agence.exportTransactions();
 
     // On importe tout
@@ -61,31 +121,11 @@ int main()
     }*/
     //
 
-    time_t currentTime;
-    struct tm *localTime;
-    while (true)
-    {
-        time(&currentTime);                   // Get the current time
-        localTime = localtime(&currentTime);  // Convert the current time to the local time
-        // bool sent = false;
+    thread th(update, std::ref(agence));
+    thread th_work(doWork, std::ref(agence));
 
-        if (localTime->tm_hour != 12 || localTime->tm_min != 8 || localTime->tm_sec != 0) continue;
+    th.join();
+    th_work.join();
 
-        Client client("localhost", "8080");
-        client.Connect();
-
-        client.SendJSON("U" + to_string(agence.getId()), usr_obj); // Envoi user
-        client.SendJSON("T" + to_string(agence.getId()), tra_obj); // Envoi transactions
-        client.SendJSON("A" + to_string(agence.getId()), acc_obj); // Envoi accounts
-
-
-        // Obtenez la réponse envoyée par le serveur en appelant la fonction GetResponse de l'instance du client.
-        json response = client.GetResponse();
-        std::cout << "Received response: " << response.dump() << std::endl;
-
-        client.Close();
-        // sent = true;
-
-    }
     return EXIT_SUCCESS;
 }
