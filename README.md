@@ -23,5 +23,12 @@ Ce projet est développé entièrement en C++.
 | :------- | :------- | :-------- | :------ |
 | ✅ | ✅ | ✅ | 🚫 |
 
+## Fonctionnalités actuelles
+- Threads
+- Socket (client et serveur asynchrone)
+- Il est possible de déposer et d'envoyer de l'argent pour deux comptes de la même agence.
+- Toutes les 10 secondes (court pour pouvoir déboguer) chaque agence envoie sa base de données à l'agence centrale.
+- Avec la requete "get" il l'agence centrale va chercher un compte donné dans ses bases de données et renvoyer le json correspondant
+
 ## Schéma explicatif (backend)
 ## Aperçu
