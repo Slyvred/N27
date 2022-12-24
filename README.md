@@ -36,7 +36,7 @@ Ce projet est développé entièrement en C++.
 - Commandes "send" et "deposit" pour envoyer 100$ et deposer 1000$ vers des comptes aléatoires (pour debug car nous n'avons pas d'interface).
 
 ## Schéma explicatif (backend)
-## Aperçu
+## Aperçu de l'interface
 ![image](https://user-images.githubusercontent.com/52755677/209443922-85e1b8f9-366c-4e63-a9ce-40fe61a302af.png)
 ![image](https://user-images.githubusercontent.com/52755677/209443934-3319f12c-d50c-474a-b15f-0cbb8f2b2b05.png)
 ![image](https://user-images.githubusercontent.com/52755677/209443959-e35ad5ce-d3a6-404a-883f-7850c806680b.png)
