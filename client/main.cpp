@@ -35,10 +35,10 @@ void update(agency& agence)
         auto acc_obj = agence.exportAccounts();
         client.SendJSON("A" + to_string(agence.getId()), acc_obj); // Envoi accounts
 
-
+        client.SendString("get 1372962516");
         // Obtenez la réponse envoyée par le serveur en appelant la fonction GetResponse de l'instance du client.
         json response = client.GetResponse();
-        std::cout << "Received response: " << response.dump() << std::endl;
+        //std::cout << "Received response: " << response.dump() << std::endl;
 
         client.Close();
         // sent = true;
@@ -67,7 +67,7 @@ void doWork(agency& agence)
                 for (auto& [id2, usr2] : agence.getUsers())
                 {
                     if (id2 == id) continue;
-                    
+
                     agence.send(agence.getUser(id).getAccount(0), agence.getUser(id2).getAccount(0), amount);
                     break;
                 }

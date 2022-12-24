@@ -6,6 +6,7 @@
 #include <list>
 #include <fstream>
 #include <filesystem>
+#include <dirent.h>
 #include "../classes/json.hpp"
 
 using json = nlohmann::json;
@@ -107,6 +108,27 @@ public:
 
       if (line.find("{") == std::string::npos) // Si c'est pas du json
       {
+        if (line.substr(0, 3) == "get") // Si on a besoin d'un compte qui n'appartient pas à l'agence décentralisée
+        {
+          std::string account_id = line.substr(4);
+          DIR *dir;
+          struct dirent *ent;
+          if ((dir = opendir("./data")) != NULL)
+          {
+            /* Répertoire ouvert avec succès */
+            while ((ent = readdir(dir)) != NULL)
+            {
+              std::cout << ent->d_name << std::endl;
+            }
+            closedir(dir);
+          }
+          else
+          {
+            /* Impossible d'ouvrir le répertoire */
+            perror("");
+          }
+        }
+
         agency_id = line.substr(1);
         if (!filesystem::exists("./data/" + agency_id + "/"))
           filesystem::create_directories("./data/" + agency_id + "/");
