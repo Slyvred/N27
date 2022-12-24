@@ -23,5 +23,24 @@ Ce projet est développé entièrement en C++.
 | :------- | :------- | :-------- | :------ |
 | ✅ | ✅ | ✅ | 🚫 |
 
+## Fonctionnalités actuelles
+- Interface avec QT (non reliée à quoi que ce soit).
+- Threads.
+- Socket (client et serveur asynchrone).
+- "Bases de données" en json.
+- Il est possible de déposer et d'envoyer de l'argent pour deux comptes de la même agence.
+- On peut créer et supprimer des comptes et des utilisateurs.
+- Les comptes ont un taux d'intérêt.
+- Toutes les 10 secondes (court pour pouvoir déboguer) chaque agence envoie sa base de données à l'agence centrale.
+- Avec la requête "get", l'agence centrale va chercher un compte donné dans ses bases de données et renvoyer le json correspondant.
+- Commandes "send" et "deposit" pour envoyer 100$ et déposer 1000$ vers des comptes aléatoires (pour debug car nous n'avons pas d'interface).
+
 ## Schéma explicatif (backend)
-## Aperçu
+## Aperçu de l'interface
+![image](https://user-images.githubusercontent.com/52755677/209443922-85e1b8f9-366c-4e63-a9ce-40fe61a302af.png)
+![image](https://user-images.githubusercontent.com/52755677/209443934-3319f12c-d50c-474a-b15f-0cbb8f2b2b05.png)
+![image](https://user-images.githubusercontent.com/52755677/209443959-e35ad5ce-d3a6-404a-883f-7850c806680b.png)
+![image](https://user-images.githubusercontent.com/52755677/209443976-1d2a5b22-fb2d-430d-8c8d-4151a820322a.png)
+
+
+
