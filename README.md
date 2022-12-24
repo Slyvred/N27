@@ -24,11 +24,14 @@ Ce projet est développé entièrement en C++.
 | ✅ | ✅ | ✅ | 🚫 |
 
 ## Fonctionnalités actuelles
+- Interface avec QT (non reliée à quoi que ce soit)
 - Threads
 - Socket (client et serveur asynchrone)
+- "Bases de données" en json
 - Il est possible de déposer et d'envoyer de l'argent pour deux comptes de la même agence.
 - Toutes les 10 secondes (court pour pouvoir déboguer) chaque agence envoie sa base de données à l'agence centrale.
 - Avec la requete "get" il l'agence centrale va chercher un compte donné dans ses bases de données et renvoyer le json correspondant
+- Commandes "send" et "deposit" pour envoyer 100$ et deposer 1000$ vers des comptes aléatoires (pour debug car nous n'avons pas d'interface)
 
 ## Schéma explicatif (backend)
 ## Aperçu
