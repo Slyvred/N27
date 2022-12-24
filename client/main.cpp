@@ -38,7 +38,7 @@ void update(agency& agence)
         client.SendString("get 1372962516");
         // Obtenez la réponse envoyée par le serveur en appelant la fonction GetResponse de l'instance du client.
         json response = client.GetResponse();
-        //std::cout << "Received response: " << response.dump() << std::endl;
+        std::cout << "Received response: " << response.dump() << std::endl;
 
         client.Close();
         // sent = true;
@@ -97,7 +97,7 @@ int main()
 {
 
     // Désactivé pour la version dev
-    srand(time(NULL));
+    //srand(time(NULL));
 
     // ZONE DE TESTS
     agency agence;
