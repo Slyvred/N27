@@ -33,7 +33,7 @@ Ce projet est développé entièrement en C++.
 - Les comptes ont un taux d'intérêt.
 - Toutes les 10 secondes (court pour pouvoir déboguer) chaque agence envoie sa base de données à l'agence centrale.
 - Avec la requête "get", l'agence centrale va chercher un compte donné dans ses bases de données et renvoyer le json correspondant.
-- Commandes "send" et "deposit" pour envoyer 100$ et deposer 1000$ vers des comptes aléatoires (pour debug car nous n'avons pas d'interface).
+- Commandes "send" et "deposit" pour envoyer 100$ et déposer 1000$ vers des comptes aléatoires (pour debug car nous n'avons pas d'interface).
 
 ## Schéma explicatif (backend)
 ## Aperçu de l'interface
