@@ -32,8 +32,15 @@ Ce projet est développé entièrement en C++.
 - On peut créer et supprimer des comptes et des utilisateurs.
 - Les comptes ont un taux d'intérêt.
 - Toutes les 10 secondes (court pour pouvoir déboguer) chaque agence envoie sa base de données à l'agence centrale.
-- Avec la requete "get" il l'agence centrale va chercher un compte donné dans ses bases de données et renvoyer le json correspondant.
+- Avec la requête "get", l'agence centrale va chercher un compte donné dans ses bases de données et renvoyer le json correspondant.
 - Commandes "send" et "deposit" pour envoyer 100$ et deposer 1000$ vers des comptes aléatoires (pour debug car nous n'avons pas d'interface).
 
 ## Schéma explicatif (backend)
 ## Aperçu
+![image](https://user-images.githubusercontent.com/52755677/209443922-85e1b8f9-366c-4e63-a9ce-40fe61a302af.png)
+![image](https://user-images.githubusercontent.com/52755677/209443934-3319f12c-d50c-474a-b15f-0cbb8f2b2b05.png)
+![image](https://user-images.githubusercontent.com/52755677/209443959-e35ad5ce-d3a6-404a-883f-7850c806680b.png)
+![image](https://user-images.githubusercontent.com/52755677/209443976-1d2a5b22-fb2d-430d-8c8d-4151a820322a.png)
+
+
+
