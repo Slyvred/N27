@@ -56,8 +56,31 @@ void agency::deleteUser(int id) {
 void agency::send(int from_acc, int to_acc, float amount) {
 
     // On vérifie que les comptes sont valides
-    if (accounts.find(from_acc) == accounts.end() || accounts.find(to_acc) == accounts.end())
+    if (accounts.find(from_acc) == accounts.end())
         return;
+
+    if (accounts.find(to_acc) == accounts.end())
+    {
+        std::cout << "Fetching remote account..." << std::endl;
+        Client client("localhost", "8080");
+        client.SendString("get " + to_string(to_acc));
+        auto response = client.GetResponse();
+        // std::cout << response.dump() << std::endl;
+
+        if (response.dump() ==  "{\"not\":\"found\"}")
+        {
+            client.Close();
+            return;
+        }
+
+        account tmp(response["interests"], response["solde"]);
+        tmp.setId(response["id"]);
+
+        accounts.insert({tmp.getId(), tmp});
+        client.Close();
+
+        return;
+    }
 
     // On vérifie que le solde permet le virement
     auto solde = accounts.at(from_acc).getSolde();

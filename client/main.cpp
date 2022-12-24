@@ -15,9 +15,8 @@ void update(agency& agence)
 
     while (true)
     {
-        time(&currentTime);                   // Get the current time
-        localTime = localtime(&currentTime);  // Convert the current time to the local time
-        // bool sent = false;
+        //time(&currentTime);                   // Get the current time
+        //localTime = localtime(&currentTime);  // Convert the current time to the local time
 
         //if (localTime->tm_hour != 18 || localTime->tm_min != 4 || localTime->tm_sec != 0) continue;
 
@@ -28,21 +27,27 @@ void update(agency& agence)
 
         auto usr_obj = agence.exportUsers();
         client.SendJSON("U" + to_string(agence.getId()), usr_obj); // Envoi user
+        // json response = client.GetResponse();
+        // std::cout << "Received response: " << response.dump() << std::endl;
 
         auto tra_obj = agence.exportTransactions();
         client.SendJSON("T" + to_string(agence.getId()), tra_obj); // Envoi transactions
+        // response = client.GetResponse();
+        // std::cout << "Received response: " << response.dump() << std::endl;
+
 
         auto acc_obj = agence.exportAccounts();
         client.SendJSON("A" + to_string(agence.getId()), acc_obj); // Envoi accounts
+        // response = client.GetResponse();
+        // std::cout << "Received response: " << response.dump() << std::endl;
+
 
         client.SendString("get 1372962516");
-        // Obtenez la réponse envoyée par le serveur en appelant la fonction GetResponse de l'instance du client.
-        json response = client.GetResponse();
+        auto response = client.GetResponse();
         std::cout << "Received response: " << response.dump() << std::endl;
 
         client.Close();
-        // sent = true;
-        sleep(10);
+        this_thread::sleep_for(10s);
     }
 }
 
@@ -74,7 +79,7 @@ void doWork(agency& agence)
                 break;
             }
 
-            //agence.send(agence.getUser(1025202362).getAccount(0), agence.getUser(1681692777).getAccount(0), amount);
+            //agence.send(agence.getUser(1025202362).getAccount(0), 1372962516, amount);
             cout << "Sent " << amount << "$" << endl;
         }
         else if (input == "deposit")
@@ -90,6 +95,7 @@ void doWork(agency& agence)
             //agence.deposit(agence.getUser(1025202362).getAccount(0), amount);
             cout << "Deposited " << amount << "$" << endl;
         }
+        else cerr << "Unknown command" << endl;
     }
 }
 

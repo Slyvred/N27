@@ -38,6 +38,7 @@ public:
   Server();
 
   json read_directory(const std::string &directory_path, const std::string &account_id);
+  void createData(const std::string& agency_id, std::string& line, std::string& filename);
 
   void handle_read(con_handle_t con_handle, boost::system::error_code const &err, size_t bytes_transfered);
   void do_async_read(con_handle_t con_handle);

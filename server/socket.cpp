@@ -52,6 +52,15 @@ json Server::read_directory(const std::string &directory_path, const std::string
     return output;
 }
 
+void Server::createData(const std::string& agency_id, std::string& line, std::string& filename)
+{
+    if (!filesystem::exists("./data/" + agency_id + "/"))
+        filesystem::create_directories("./data/" + agency_id + "/");
+
+    filename = "data/" + agency_id + "/" + line + ".json";
+    std::cout << "Création du fichier: " << filename << std::endl;
+}
+
 void Server::handle_read(con_handle_t con_handle, boost::system::error_code const &err, size_t bytes_transfered)
 {
     if (bytes_transfered > 0)
@@ -76,11 +85,7 @@ void Server::handle_read(con_handle_t con_handle, boost::system::error_code cons
             else
             {
                 agency_id = line.substr(1);
-                if (!filesystem::exists("./data/" + agency_id + "/"))
-                    filesystem::create_directories("./data/" + agency_id + "/");
-
-                filename = "data/" + agency_id + "/" + line + ".json";
-                std::cout << "Création du fichier: " << filename << std::endl;
+                createData(agency_id, line, filename);
             }
         }
         else
