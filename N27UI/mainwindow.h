@@ -16,6 +16,18 @@ public:
     ~MainWindow();
 
 private slots:
+    void on_Deconnecter_Btn_clicked();
+
+    void on_Virement_Btn_clicked();
+
+    void on_stackedWidget_currentChanged(int arg1);
+
+    void on_Connexion_Btn_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void on_Creer_Btn_clicked();
+
     void on_pushButton_clicked();
 
 private:

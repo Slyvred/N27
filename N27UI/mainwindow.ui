@@ -23,17 +23,17 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>20</x>
       <y>30</y>
-      <width>531</width>
-      <height>231</height>
+      <width>731</width>
+      <height>441</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">font:  13pt &quot;Futura&quot;;</string>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Connexion">
      <property name="styleSheet">
@@ -142,8 +142,8 @@
      <widget class="QGroupBox" name="groupBox_2">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>20</y>
+        <x>0</x>
+        <y>0</y>
         <width>821</width>
         <height>581</height>
        </rect>
@@ -170,8 +170,8 @@
       <widget class="QLabel" name="label_12">
        <property name="geometry">
         <rect>
-         <x>30</x>
-         <y>210</y>
+         <x>20</x>
+         <y>220</y>
          <width>251</width>
          <height>16</height>
         </rect>
@@ -185,8 +185,8 @@
         <rect>
          <x>20</x>
          <y>160</y>
-         <width>217</width>
-         <height>23</height>
+         <width>272</width>
+         <height>33</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -207,8 +207,8 @@
         <rect>
          <x>20</x>
          <y>130</y>
-         <width>291</width>
-         <height>24</height>
+         <width>374</width>
+         <height>32</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -248,14 +248,14 @@
          <x>20</x>
          <y>100</y>
          <width>181</width>
-         <height>23</height>
+         <height>33</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Prénom</string>
+           <string>Prénom :</string>
           </property>
          </widget>
         </item>
@@ -270,7 +270,7 @@
          <x>20</x>
          <y>70</y>
          <width>164</width>
-         <height>23</height>
+         <height>33</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_10">
@@ -280,12 +280,135 @@
            <string notr="true">background : rgb(33, 33, 33)</string>
           </property>
           <property name="text">
-           <string>Nom</string>
+           <string>Nom :</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QLineEdit" name="lineEdit"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>380</y>
+         <width>171</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Créer mon DigiCompte</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>260</y>
+         <width>192</width>
+         <height>33</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Numéro :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_3"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>300</y>
+         <width>170</width>
+         <height>33</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Voie :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_4"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>330</y>
+         <width>277</width>
+         <height>33</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Complément d'adresse :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_5"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>360</y>
+         <width>215</width>
+         <height>33</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Code postal :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_6"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>390</y>
+         <width>169</width>
+         <height>33</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Ville :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_7"/>
         </item>
        </layout>
       </widget>
@@ -418,7 +541,7 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="Acceuil">
+    <widget class="QWidget" name="UserConnected">
      <property name="styleSheet">
       <string notr="true">background : rgb(33, 33, 33)</string>
      </property>
@@ -427,7 +550,7 @@
        <rect>
         <x>20</x>
         <y>20</y>
-        <width>461</width>
+        <width>475</width>
         <height>191</height>
        </rect>
       </property>
@@ -519,7 +642,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
