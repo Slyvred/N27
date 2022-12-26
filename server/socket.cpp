@@ -78,7 +78,7 @@ json Server::read_directory(const std::string &directory_path, const std::string
                 if (it["id"].dump() == account_id)
                 {
                     output = it;
-                    break;
+                    return output;
                 }
             }
         }
