@@ -6,7 +6,7 @@
 #include <list>
 #include <fstream>
 #include <filesystem>
-#include <dirent.h>
+// #include <dirent.h>
 #include "../classes/json.hpp"
 
 using json = nlohmann::json;

@@ -2,7 +2,7 @@
 
 Server::Server() : m_ioservice(), m_acceptor(m_ioservice), m_connections() {}
 
-json Server::read_directory(const std::string &directory_path, const std::string &account_id)
+/*json Server::read_directory(const std::string &directory_path, const std::string &account_id)
 {
     DIR *dir;
     struct dirent *ent;
@@ -12,12 +12,12 @@ json Server::read_directory(const std::string &directory_path, const std::string
         std::cerr << "Impossible d'ouvrir le répertoire" << std::endl;
     }
 
-    /* Répertoire ouvert avec succès */
+    // Répertoire ouvert avec succès
     while ((ent = readdir(dir)) != NULL)
     {
         if (ent->d_type == DT_DIR)
         {
-            /* C'est un répertoire, on le parcourt récursivement */
+            // C'est un répertoire, on le parcourt récursivement
             std::string subdir_path = directory_path + "/" + std::string(ent->d_name);
             if (std::string(ent->d_name) != "." && std::string(ent->d_name) != "..")
             {
@@ -26,7 +26,7 @@ json Server::read_directory(const std::string &directory_path, const std::string
         }
         else
         {
-            /* C'est un fichier, on lit son contenu */
+            // C'est un fichier, on lit son contenu
             std::string file_path = directory_path + "/" + std::string(ent->d_name);
             std::ifstream file(file_path);
             if (file_path.find("A") == std::string::npos || !file.is_open())
@@ -45,6 +45,45 @@ json Server::read_directory(const std::string &directory_path, const std::string
         }
     }
     closedir(dir);
+    return output;
+}*/
+
+
+json Server::read_directory(const std::string &directory_path, const std::string &account_id)
+{
+    static json output = {{"not", "found"}};
+    std::filesystem::path dir_path(directory_path);
+    if (!std::filesystem::is_directory(dir_path))
+    {
+        std::cerr << "Impossible d'ouvrir le répertoire" << std::endl;
+        return output;
+    }
+
+    for (const auto &entry : std::filesystem::recursive_directory_iterator(dir_path))
+    {
+        if (entry.is_regular_file())
+        {
+            std::string file_path = entry.path().string();
+            if (file_path.find("A") == std::string::npos)
+                continue; // Si ce n'est pas un fichier de compte
+
+            std::ifstream file(file_path);
+            if (!file.is_open())
+                continue; // Si on n'arrive pas à ouvrir le fichier
+
+            json obj = json::parse(file);
+            file.close();
+            for (auto &it : obj["id"])
+            {
+                if (it["id"].dump() == account_id)
+                {
+                    output = it;
+                    break;
+                }
+            }
+        }
+    }
+
     return output;
 }
 
