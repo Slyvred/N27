@@ -42,7 +42,7 @@ void update(agency& agence)
         // std::cout << "Received response: " << response.dump() << std::endl;
 
 
-        client.SendString("get 1372962516");
+        client.SendString("get 1458691003");
         auto response = client.GetResponse();
         std::cout << "Received response: " << response.dump() << std::endl;
 
@@ -101,13 +101,12 @@ void doWork(agency& agence)
 
 int main()
 {
-
-    // Désactivé pour la version dev
-    //srand(time(NULL));
+    srand(time(NULL));
 
     // ZONE DE TESTS
     agency agence;
 
+    
     infos inf = {"Doe", "John", "Zaza street"};
 
     // On crée 4 utilisateurs aléatoires ayant entre 1 et 2 comptes
@@ -127,14 +126,13 @@ int main()
     // agence.send(agence.getUser(2044897763).getAccount(0), agence.getUser(2044897763).getAccount(0), 50);
 
     // On exporte tout
-    auto usr_obj = agence.exportUsers();
-    auto acc_obj = agence.exportAccounts();
-    auto tra_obj = agence.exportTransactions();
+    agence.exportAll();
 
     // On importe tout
     /*agence.importUsers();
     agence.importAcounts();
     agence.importTransactions();*/
+    //agence.importAll();
 
     // On print pour vérifier que l'import s'est déroulé correctement
     /*for (auto &[id, usr] : agence.getUsers())

@@ -45,11 +45,13 @@ public:
     json exportUsers() const;
     json exportAccounts() const;
     json exportTransactions() const;
+    vector<json> exportAll() const;
     int getId() const;
 
     void importUsers();
     void importAcounts();
     void importTransactions();
+    void importAll();
 
     const unordered_map<int, user>& getUsers() const;
     const unordered_map<int, account>& getAccounts() const;

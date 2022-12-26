@@ -6,7 +6,7 @@
 #include <random>
 
 account::account(float interets, float solde) : interets(interets), solde(solde) {
-    id = rand();
+    id = rand(); // Id temporaire
 }
 
 int account::getId() const {

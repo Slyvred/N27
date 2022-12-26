@@ -7,48 +7,44 @@ json Server::read_directory(const std::string &directory_path, const std::string
     DIR *dir;
     struct dirent *ent;
     static json output = {{"not", "found"}};
-    if ((dir = opendir(directory_path.c_str())) != NULL)
+    if ((dir = opendir(directory_path.c_str())) == NULL)
     {
-        /* Répertoire ouvert avec succès */
-        while ((ent = readdir(dir)) != NULL)
-        {
-            if (ent->d_type == DT_DIR)
-            {
-                /* C'est un répertoire, on le parcourt récursivement */
-                std::string subdir_path = directory_path + "/" + std::string(ent->d_name);
-                if (std::string(ent->d_name) != "." && std::string(ent->d_name) != "..")
-                {
-                    read_directory(subdir_path, account_id);
-                }
-            }
-            else
-            {
-                /* C'est un fichier, on lit son contenu */
-                std::string file_path = directory_path + "/" + std::string(ent->d_name);
-                if (file_path.find("A") == std::string::npos)
-                    continue; // Si ce n'est pas un fichier de compte
+        std::cerr << "Impossible d'ouvrir le répertoire" << std::endl;
+    }
 
-                std::ifstream file(file_path);
-                if (file.is_open())
+    /* Répertoire ouvert avec succès */
+    while ((ent = readdir(dir)) != NULL)
+    {
+        if (ent->d_type == DT_DIR)
+        {
+            /* C'est un répertoire, on le parcourt récursivement */
+            std::string subdir_path = directory_path + "/" + std::string(ent->d_name);
+            if (std::string(ent->d_name) != "." && std::string(ent->d_name) != "..")
+            {
+                read_directory(subdir_path, account_id);
+            }
+        }
+        else
+        {
+            /* C'est un fichier, on lit son contenu */
+            std::string file_path = directory_path + "/" + std::string(ent->d_name);
+            std::ifstream file(file_path);
+            if (file_path.find("A") == std::string::npos || !file.is_open())
+                continue; // Si ce n'est pas un fichier de compte ou si on n'arrive pas à l'ouvrir
+
+            json obj = json::parse(file);
+            file.close();
+            for (auto &it : obj["id"])
+            {
+                if (it["id"].dump() == account_id)
                 {
-                    json obj = json::parse(file);
-                    for (auto &it : obj["id"])
-                    {
-                        if (it["id"].dump() == account_id)
-                        {
-                            output = it;
-                        }
-                    }
-                    file.close();
+                    output = it;
+                    break;
                 }
             }
         }
-        closedir(dir);
     }
-    else
-    {
-        perror("Impossible d'ouvrir le répertoire");
-    }
+    closedir(dir);
     return output;
 }
 
