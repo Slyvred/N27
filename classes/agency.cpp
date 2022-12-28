@@ -29,9 +29,9 @@ int importId()
 
 agency::agency()
 {
-    auto tmp = importId();
-    id = (tmp) ? tmp :  rand(); // On essaie de récupérer l'ancien id
-
+    // auto tmp = importId();
+    // id = (tmp) ? tmp :  rand(); // On essaie de récupérer l'ancien id
+    id = rand();
     n_users = 0;
 }
 
@@ -89,36 +89,50 @@ void agency::send(int from_acc, int to_acc, float amount)
     if (accounts.find(from_acc) == accounts.end())
         return;
 
-    // Si on ne trouve pas le compte, on fait la requête à l'agence centrale
-    if (accounts.find(to_acc) == accounts.end())
-    {
-        std::cout << "Fetching remote account..." << std::endl;
-        Client client("localhost", "8080");
-        client.SendString("get " + to_string(to_acc));
-        auto response = client.GetResponse();
-        // std::cout << response.dump() << std::endl;
-
-        if (response.dump() == "{\"not\":\"found\"}")
-        {
-            client.Close();
-            return;
-        }
-
-        account tmp(response["interests"], response["solde"]);
-        tmp.setId(response["id"]);
-
-        accounts.insert({tmp.getId(), tmp});
-        client.Close();
-    }
-
     // On vérifie que le solde permet le virement
     auto solde = accounts.at(from_acc).getSolde();
     if (solde < amount)
         return;
 
-    // On effectue le virement
-    accounts.at(from_acc).setSolde(solde - amount);
-    accounts.at(to_acc).setSolde(accounts.at(to_acc).getSolde() + amount);
+
+    // Si on ne trouve pas le compte, on fait la requête à l'agence centrale
+    if (accounts.find(to_acc) == accounts.end())
+    {
+        cout << "Fetching remote account..." << endl;
+        Client client("localhost", "8080");
+        client.Connect();
+        client.SendString("get " + to_string(to_acc));
+        auto response = client.GetResponse();
+
+        if (response.dump() == "{\"key\":\"value\"}" || response.dump() == "null") // Si on n'a pas le compte
+        {
+            cerr << "Account not found" << endl;
+            client.Close();
+            return;
+        }
+
+        cout << "Remote account found" << endl;
+
+        auto to_solde = response["acc"]["id"][to_string(to_acc)]["solde"];
+        response["acc"]["id"][to_string(to_acc)]["solde"] = (float)to_solde + amount;
+        accounts.at(from_acc).setSolde(solde - amount);
+
+        auto acc_obj = exportAccounts();
+        client.SendJSON("A" + to_string(getId()), acc_obj); // Envoi accounts local
+
+        // Envoi accouts distant
+        client.SendJSON(response["file"], response["acc"]);
+
+        client.Close();
+
+        cout << "Sent " << amount << "$ to " << to_acc << " from " << from_acc << endl;
+    }
+    else
+    {
+        // On effectue le virement local
+        accounts.at(from_acc).setSolde(solde - amount);
+        accounts.at(to_acc).setSolde(accounts.at(to_acc).getSolde() + amount);
+    }
 
     // On ajoute le virement dans l'historique de transactions
     transaction transac;

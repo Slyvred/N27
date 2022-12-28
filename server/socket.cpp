@@ -1,4 +1,5 @@
 #include "socket.hpp"
+#include <algorithm>
 
 Server::Server() : m_ioservice(), m_acceptor(m_ioservice), m_connections() {}
 
@@ -51,7 +52,7 @@ Server::Server() : m_ioservice(), m_acceptor(m_ioservice), m_connections() {}
 
 json Server::read_directory(const std::string &directory_path, const std::string &account_id)
 {
-    static json output = {{"not", "found"}};
+    static json output = {{"key", "value"}};
     std::filesystem::path dir_path(directory_path);
     if (!std::filesystem::is_directory(dir_path))
     {
@@ -64,6 +65,9 @@ json Server::read_directory(const std::string &directory_path, const std::string
         if (entry.is_regular_file())
         {
             std::string file_path = entry.path().string();
+            std::string filename = entry.path().filename().string();
+            filename = filename.substr(0, filename.length() - 5); // .json
+
             if (file_path.find("A") == std::string::npos)
                 continue; // Si ce n'est pas un fichier de compte
 
@@ -73,11 +77,12 @@ json Server::read_directory(const std::string &directory_path, const std::string
 
             json obj = json::parse(file);
             file.close();
+            output = {{"file", filename}};
             for (auto &it : obj["id"])
             {
                 if (it["id"].dump() == account_id)
                 {
-                    output = it;
+                    output["acc"] = obj;
                     return output;
                 }
             }
@@ -93,7 +98,26 @@ void Server::createData(const std::string& agency_id, std::string& line, std::st
         filesystem::create_directories("./data/" + agency_id + "/");
 
     filename = "data/" + agency_id + "/" + line + ".json";
+
     std::cout << "Création du fichier: " << filename << std::endl;
+    // if (filename.find('X') == std::string::npos)
+    // {
+    //     if (!filesystem::exists("./data/" + agency_id + "/"))
+    //         filesystem::create_directories("./data/" + agency_id + "/");
+
+    //     filename = "data/" + agency_id + "/" + line + ".json";
+    // }
+    // else // Si c'est un send, on traite la chaîne
+    // {   
+    //     // On enlève les deux 'A'
+    //     std::remove_if(filename.begin(), filename.end(), [](char c) { return c == 'A'; });
+    //     filename.pop_back();
+    //     filename.pop_back();
+
+    //     // On remplace le X par un A
+    //     std::replace(filename.rbegin(), filename.rend(), 'X', 'A');
+    //     std::cout << "Mise à jour du fichier: " << filename << std::endl;
+    // }
 }
 
 void Server::handle_read(con_handle_t con_handle, boost::system::error_code const &err, size_t bytes_transfered)
@@ -114,7 +138,7 @@ void Server::handle_read(con_handle_t con_handle, boost::system::error_code cons
                 std::cout << "Compte cherché: " << account_id << std::endl;
 
                 auto account = read_directory("./data", account_id);
-                std::cout << "Compte: " << account << std::endl;
+                std::cout << "Compte: " << account["acc"]["id"][account_id] << std::endl;
                 response = account;
             }
             else

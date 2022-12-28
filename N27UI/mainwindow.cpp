@@ -1,5 +1,11 @@
 #include "mainwindow.h"
+#include "includes.h"
 #include "./ui_mainwindow.h"
+#include <filesystem>
+
+extern agency agence;
+user usr();
+int id;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -44,6 +50,7 @@ void MainWindow::on_Virement_Btn_clicked()
 //connexion
 void MainWindow::on_Connexion_Btn_clicked()
 {
+
     on_stackedWidget_currentChanged(3);
 }
 
@@ -66,6 +73,25 @@ void MainWindow::on_Creer_Btn_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
+    QComboBox* comboBox = findChild<QComboBox*>("SelectionCpt_comboBox");
+    QLineEdit* lineEdit = findChild<QLineEdit*>("RIB_Inpt");
 
+    if (!comboBox || !lineEdit) return;
+
+    QString from_acc = comboBox->currentText();
+    QString to_acc = lineEdit->text();
+
+    agence.send(from_acc.toInt(), to_acc.toInt(), 100);
+
+}
+
+
+void MainWindow::on_SelectionCpt_comboBox_activated(int index)
+{
+    QComboBox* comboBox = findChild<QComboBox*>("SelectionCpt_comboBox");
+    if (!comboBox) return;
+
+    for (auto& it : agence.getUser(id).getAccounts())
+        comboBox->addItem(QString::number(it));
 }
 

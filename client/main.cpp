@@ -1,6 +1,5 @@
 #include <iostream>
-#include <ctime>
-// #include <thread>
+#include <thread>
 #include "../classes/account.hpp"
 #include "../classes/agency.hpp"
 #include "../classes/user.hpp"
@@ -10,16 +9,8 @@
 // Fonction update
 void update(agency& agence)
 {
-    time_t currentTime;
-    struct tm *localTime;
-
     while (true)
     {
-        //time(&currentTime);                   // Get the current time
-        //localTime = localtime(&currentTime);  // Convert the current time to the local time
-
-        //if (localTime->tm_hour != 18 || localTime->tm_min != 4 || localTime->tm_sec != 0) continue;
-
         agence.update();
 
         Client client("localhost", "8080");
@@ -27,24 +18,19 @@ void update(agency& agence)
 
         auto usr_obj = agence.exportUsers();
         client.SendJSON("U" + to_string(agence.getId()), usr_obj); // Envoi user
-        // json response = client.GetResponse();
+        //auto response = client.GetResponse();
         // std::cout << "Received response: " << response.dump() << std::endl;
 
         auto tra_obj = agence.exportTransactions();
         client.SendJSON("T" + to_string(agence.getId()), tra_obj); // Envoi transactions
-        // response = client.GetResponse();
+        //response = client.GetResponse();
         // std::cout << "Received response: " << response.dump() << std::endl;
 
 
         auto acc_obj = agence.exportAccounts();
         client.SendJSON("A" + to_string(agence.getId()), acc_obj); // Envoi accounts
-        // response = client.GetResponse();
-        // std::cout << "Received response: " << response.dump() << std::endl;
-
-
-        client.SendString("get 1458691003");
         auto response = client.GetResponse();
-        std::cout << "Received response: " << response.dump() << std::endl;
+        //std::cout << "Received response: " << response.dump() << std::endl;
 
         client.Close();
         this_thread::sleep_for(10s);
@@ -67,7 +53,7 @@ void doWork(agency& agence)
 
 
             // Implémentation de test absolument atroce
-            for (auto& [id, usr] : agence.getUsers())
+            /*for (auto& [id, usr] : agence.getUsers())
             {
                 for (auto& [id2, usr2] : agence.getUsers())
                 {
@@ -77,10 +63,10 @@ void doWork(agency& agence)
                     break;
                 }
                 break;
-            }
+            }*/
 
-            //agence.send(agence.getUser(1025202362).getAccount(0), 1372962516, amount);
-            cout << "Sent " << amount << "$" << endl;
+            agence.send(130456844, 1393412980, 100);
+            //cout << "Sent " << amount << "$" << endl;
         }
         else if (input == "deposit")
         {
@@ -92,7 +78,6 @@ void doWork(agency& agence)
                 agence.deposit(agence.getUser(id).getAccount(0), amount);
                 break;
             }
-            //agence.deposit(agence.getUser(1025202362).getAccount(0), amount);
             cout << "Deposited " << amount << "$" << endl;
         }
         else cerr << "Unknown command" << endl;
@@ -107,7 +92,7 @@ int main()
     agency agence;
 
     
-    infos inf = {"Doe", "John", "Zaza street"};
+    /*infos inf = {"Doe", "John", "Zaza street"};
 
     // On crée 4 utilisateurs aléatoires ayant entre 1 et 2 comptes
     for (int i = 0; i < 4; ++i)
@@ -116,26 +101,16 @@ int main()
 
     // Chaque compte dispose de 1000 euros
     for (auto &[num, acc] : agence.getAccounts())
-        agence.deposit(num, 1000);
-
-
-    // On simule des transactions entre deux utilisateurs
-    // agence.send(agence.getUser(1681692777).getAccount(0), agence.getUser(2044897763).getAccount(0), 300);
-    // agence.send(agence.getUser(1681692777).getAccount(0), agence.getUser(2044897763).getAccount(0), 50);
-    // agence.send(agence.getUser(2044897763).getAccount(0), agence.getUser(1681692777).getAccount(0), 300);
-    // agence.send(agence.getUser(2044897763).getAccount(0), agence.getUser(2044897763).getAccount(0), 50);
+        agence.deposit(num, 1000);*/
 
     // On exporte tout
-    agence.exportAll();
+    //agence.exportAll();
 
     // On importe tout
-    /*agence.importUsers();
-    agence.importAcounts();
-    agence.importTransactions();*/
-    //agence.importAll();
+    agence.importAll();
 
     // On print pour vérifier que l'import s'est déroulé correctement
-    /*for (auto &[id, usr] : agence.getUsers())
+    for (auto &[id, usr] : agence.getUsers())
     {
         cout << usr << endl;
     }
@@ -150,7 +125,7 @@ int main()
         cout << "amount: " << it.amount << endl;
         cout << "timestamp: " << it.timestamp << endl;
         cout << "---------------------" << endl;
-    }*/
+    }
     //
 
     thread th(update, std::ref(agence));
