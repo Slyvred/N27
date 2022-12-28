@@ -21,7 +21,7 @@ Ce projet est développé entièrement en C++.
 
 | structures du backend | mise en place des sockets | mise en place du système de données | interface graphique |
 | :------- | :------- | :-------- | :------ |
-| ✅ | ✅ | ✅ | 🚫 |
+| ✅ | ✅ | ✅ | :pencil2: |
 
 ## Fonctionnalités actuelles
 - Interface avec QT (non reliée à quoi que ce soit).

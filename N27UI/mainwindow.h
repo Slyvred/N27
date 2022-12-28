@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "includes.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -30,11 +30,11 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_SelectionCpt_comboBox_activated(int index);
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_4_clicked();
 
 private:
     Ui::MainWindow *ui;
 };
-
-agency agence;
 #endif // MAINWINDOW_H
