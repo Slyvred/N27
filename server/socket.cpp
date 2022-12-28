@@ -100,24 +100,38 @@ void Server::createData(const std::string& agency_id, std::string& line, std::st
     filename = "data/" + agency_id + "/" + line + ".json";
 
     std::cout << "Création du fichier: " << filename << std::endl;
-    // if (filename.find('X') == std::string::npos)
-    // {
-    //     if (!filesystem::exists("./data/" + agency_id + "/"))
-    //         filesystem::create_directories("./data/" + agency_id + "/");
+}
 
-    //     filename = "data/" + agency_id + "/" + line + ".json";
-    // }
-    // else // Si c'est un send, on traite la chaîne
-    // {   
-    //     // On enlève les deux 'A'
-    //     std::remove_if(filename.begin(), filename.end(), [](char c) { return c == 'A'; });
-    //     filename.pop_back();
-    //     filename.pop_back();
+void Server::handle_command(std::string &line, std::string &agency_id, std::string &filename)
+{
+    if (line.find("{") == std::string::npos) // Si c'est pas du json
+    {
+        if (line.substr(0, 3) == "get") // Si on a besoin d'un compte qui n'appartient pas à l'agence décentralisée
+        {
+            std::string account_id = line.substr(4);
+            std::cout << "Compte cherché: " << account_id << std::endl;
 
-    //     // On remplace le X par un A
-    //     std::replace(filename.rbegin(), filename.rend(), 'X', 'A');
-    //     std::cout << "Mise à jour du fichier: " << filename << std::endl;
-    // }
+            auto account = read_directory("./data", account_id);
+            std::cout << "Compte: " << account["acc"]["id"][account_id] << std::endl;
+            response = account;
+        }
+        else
+        {
+            agency_id = line.substr(1);
+            createData(agency_id, line, filename);
+        }
+    }
+    else
+    {
+        json obj = json::parse(line);
+        std::ofstream file(filename);
+        if (file.is_open())
+        {
+            file << setw(2) << obj << std::endl;
+            file.close();
+        }
+        std::cout << "Fichier reçu" /*<< obj.dump()*/ << std::endl;
+    }
 }
 
 void Server::handle_read(con_handle_t con_handle, boost::system::error_code const &err, size_t bytes_transfered)
@@ -130,6 +144,7 @@ void Server::handle_read(con_handle_t con_handle, boost::system::error_code cons
         static std::string agency_id;
         std::getline(is, line);
 
+        /*
         if (line.find("{") == std::string::npos) // Si c'est pas du json
         {
             if (line.substr(0, 3) == "get") // Si on a besoin d'un compte qui n'appartient pas à l'agence décentralisée
@@ -156,8 +171,10 @@ void Server::handle_read(con_handle_t con_handle, boost::system::error_code cons
                 file << setw(2) << obj << std::endl;
                 file.close();
             }
-            std::cout << "Fichier reçu" /*<< obj.dump()*/ << std::endl;
+            std::cout << "Fichier reçu" << std::endl;
         }
+        */
+       handle_command(line, agency_id, filename);
     }
 
     if (!err)

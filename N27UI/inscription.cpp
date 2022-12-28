@@ -3,6 +3,9 @@
 //
 
 #include "../classes/agency.hpp"
+#include <QMainWindow>
+#include "mainwindow.h"
+#include "./ui_mainwindow.h"
 
 //form completed, account creation
 void MainWindow::on_pushButton_2_clicked()

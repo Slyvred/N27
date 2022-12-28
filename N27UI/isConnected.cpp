@@ -4,6 +4,10 @@
 
 #include "../classes/agency.hpp"
 
+#include <QMainWindow>
+#include "mainwindow.h"
+#include "./ui_mainwindow.h"
+
 //log out
 void MainWindow::on_Deconnecter_Btn_clicked()
 {

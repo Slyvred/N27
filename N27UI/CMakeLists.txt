@@ -19,11 +19,11 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
-        includes.h
-        ../classes/account.hpp
-        ../classes/agency.hpp
-        ../classes/json.hpp
-        ../classes/user.hpp
+#        includes.h
+#        ../classes/account.hpp
+#        ../classes/agency.hpp
+#        ../classes/json.hpp
+#        ../classes/user.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

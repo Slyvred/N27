@@ -3,6 +3,9 @@
 //
 
 #include "../classes/agency.hpp"
+#include <QMainWindow>
+#include "mainwindow.h"
+#include "./ui_mainwindow.h"
 
 //bank transfer done, new  transfer -> go transfer page
 void MainWindow::on_pushButton_3_clicked()
