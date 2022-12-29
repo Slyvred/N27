@@ -11,19 +11,31 @@ int importId()
     filesystem::path dir_path("./data/");
     if (!filesystem::exists(dir_path))
     {
-        std::cerr << "Cannot find db" << std::endl;
+        cerr << "Cannot find db" << endl;
+        return 0;
+    }
+
+    if (filesystem::is_empty(dir_path))
+    {
+        cerr << "Db folder is empty" << endl;
         return 0;
     }
 
     string id;
-    for (auto &entry : filesystem::directory_iterator(dir_path))
-    {
-        id = entry.path().filename().string();
+    auto entry = filesystem::directory_iterator(dir_path);
 
-        id = id.substr(1);
-        id = id.substr(0, id.length() - 5); // -5 car .json
-        break;
-    }
+    id = entry->path().filename().string();
+    id = id.substr(1);
+    id = id.substr(0, id.length() - 5); // -5 car .json
+
+    // for (auto &entry : filesystem::directory_iterator(dir_path))
+    // {
+    //     id = entry.path().filename().string();
+
+    //     id = id.substr(1);
+    //     id = id.substr(0, id.length() - 5); // -5 car .json
+    //     break;
+    // }
     return stoi(id);
 }
 
@@ -117,8 +129,8 @@ void agency::send(int from_acc, int to_acc, float amount)
         response["acc"]["id"][to_string(to_acc)]["solde"] = (float)to_solde + amount;
         accounts.at(from_acc).setSolde(solde - amount);
 
-        auto acc_obj = exportAccounts();
-        client.SendJSON("A" + to_string(getId()), acc_obj); // Envoi accounts local
+        //auto acc_obj = exportAccounts();
+        //client.SendJSON("A" + to_string(getId()), acc_obj); // Envoi accounts local
 
         // Envoi accouts distant
         client.SendJSON(response["file"], response["acc"]);
@@ -430,6 +442,12 @@ void agency::importTransactions()
 void agency::importAll()
 {
     id = importId();
+    
+    if (!id) {
+        cerr << "No data to import" << endl;
+        return;
+    }
+
     importAcounts();
     importTransactions();
     importUsers();
