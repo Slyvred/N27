@@ -14,7 +14,7 @@ using namespace std;
 #define N27_USER_H
 
 typedef struct Infos {
-    string nom, prenom, addr;
+    string nom, prenom, addr, date_naiss, genre, passwd;
 }infos;
 
 // bool operator==(const infos& lhs, const infos& rhs) {

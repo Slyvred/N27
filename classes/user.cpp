@@ -53,6 +53,11 @@ ostream& operator<<(ostream& os, const user& user)
     os << "Nom: " << infos.nom << endl;
     os << "Prénom: " << infos.prenom << endl;
     os << "Adresse: " << infos.addr << endl;
+    os << "Date de naissance: " << infos.date_naiss << endl;
+    os << "Genre: " << infos.genre << endl;
+    os << "Mot de passe: " << infos.passwd << endl;
+
+
 
     os << "Numéro de client: " << user.getId() << endl;
     os << "Comptes: (" << user.getAccounts().size() << ")" << endl << endl;

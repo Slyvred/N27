@@ -91,8 +91,8 @@ int main()
     // ZONE DE TESTS
     agency agence;
 
-    
-    /*infos inf = {"Doe", "John", "Zaza street"};
+    // string nom, prenom, addr, date_naiss, genre, passwd;
+    /*infos inf = {"Doe", "John", "Zaza street", "12/04/2003", "Homme", "rockyou123"};
 
     // On crée 4 utilisateurs aléatoires ayant entre 1 et 2 comptes
     for (int i = 0; i < 4; ++i)
@@ -101,10 +101,10 @@ int main()
 
     // Chaque compte dispose de 1000 euros
     for (auto &[num, acc] : agence.getAccounts())
-        agence.deposit(num, 1000);*/
+        agence.deposit(num, 1000);
 
     // On exporte tout
-    //agence.exportAll();
+    agence.exportAll();*/
 
     // On importe tout
     agence.importAll();

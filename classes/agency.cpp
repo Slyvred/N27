@@ -71,7 +71,8 @@ user &agency::getUser(int id)
 {
     auto index = users.find(id);
 
-    infos inf = {"none", "none", "none"};
+    // Bof
+    infos inf = {"none", "none", "none", "none", "none", "none"};
     user tmp(inf, 0);
 
     // On renvoie un user nul si il n'existe pas
@@ -80,9 +81,17 @@ user &agency::getUser(int id)
 
 void agency::deleteUser(int id)
 {
-    if (users.find(id) == users.end())
+    if (users.find(id) == users.end()) // Si l'user n'existe pas
         return;
-    users.erase(id);
+
+    auto usr = getUser(id); // On obtient une référence vers notre user
+
+    for (auto &it : usr.getAccounts()) // On supprime ses comptes
+    {
+        accounts.erase(it);
+    }
+
+    users.erase(id); // On supprime l'utilisateur
     n_users--;
 }
 
@@ -214,6 +223,10 @@ json agency::exportUsers() const
         user["id"][str_num]["infos"]["nom"] = infos.nom;
         user["id"][str_num]["infos"]["prenom"] = infos.prenom;
         user["id"][str_num]["infos"]["adresse"] = infos.addr;
+        user["id"][str_num]["infos"]["genre"] = infos.genre;
+        user["id"][str_num]["infos"]["passwd"] = infos.passwd;
+        user["id"][str_num]["infos"]["date_naiss"] = infos.date_naiss;
+
         user["id"][str_num]["numero"] = num;
 
         // Nous donne le nombre d'itérations à faire dans importJson
@@ -370,6 +383,9 @@ void agency::importUsers()
         inf.addr = it["infos"]["adresse"];
         inf.nom = it["infos"]["nom"];
         inf.prenom = it["infos"]["prenom"];
+        inf.date_naiss = it["infos"]["date_naiss"];
+        inf.genre = it["infos"]["genre"];
+        inf.passwd = it["infos"]["passwd"];
 
         // On récupère l'id
         int nb_acc = it["nbAccounts"];
