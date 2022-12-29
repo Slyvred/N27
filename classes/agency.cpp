@@ -194,6 +194,16 @@ const unordered_map<int, account> &agency::getAccounts() const
     return accounts;
 }
 
+account agency::getAccount(int id) const
+{
+    account tmp(1, -1);
+    if (accounts.find(id) == accounts.end())
+        return tmp;
+    
+    return accounts.at(id);
+}
+
+
 const vector<transaction> &agency::getTransactions() const
 {
     return transactions;

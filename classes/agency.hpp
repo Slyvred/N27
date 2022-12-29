@@ -56,6 +56,7 @@ public:
 
     const unordered_map<int, user>& getUsers() const;
     const unordered_map<int, account>& getAccounts() const;
+    account getAccount(int id) const;
     const vector<transaction>& getTransactions() const;
 
     void update();
