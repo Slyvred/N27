@@ -1,5 +1,7 @@
 #include "socket.hpp"
 #include <algorithm>
+#include <chrono>
+#include <string>
 
 Server::Server() : m_ioservice(), m_acceptor(m_ioservice), m_connections() {}
 
@@ -61,6 +63,56 @@ void Server::createData(const std::string& agency_id, std::string& line, std::st
     std::cout << "Création du fichier: " << filename << std::endl;
 }
 
+void Server::update(const std::string& agency_id, const std::string& last_write_time)
+{
+    static json output = {{"key", "value"}};
+    std::filesystem::path dir_path("./data/" + agency_id);
+
+    auto count = std::stol(last_write_time);
+
+    if (!std::filesystem::is_directory(dir_path))
+    {
+        std::cerr << "Impossible d'ouvrir le répertoire" << std::endl;
+        return;
+    }
+
+    if (std::filesystem::is_empty(dir_path))
+    {
+        std::cerr << "Répertoire vide" << std::endl;
+        return;
+    }
+
+    for (const auto &entry : std::filesystem::recursive_directory_iterator(dir_path))
+    {
+        if (!entry.is_regular_file())
+            continue;
+
+        if (abs(entry.last_write_time().time_since_epoch().count()) > count) // Si notre db est plus vielle
+            continue;
+
+        ifstream file(entry.path().string());
+        if (!file.is_open())
+            continue;
+
+        response = json::parse(file);
+        file.close();
+
+        std::cout << "Envoi de " << entry.path().filename().string() << std::endl;
+    }
+}
+
+std::vector<std::string> split(const std::string &str, char delimiter)
+{
+    std::vector<std::string> tokens;
+    std::string token;
+    std::istringstream token_stream(str);
+    while (std::getline(token_stream, token, delimiter))
+    {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
+
 void Server::handle_command(std::string &line, std::string &agency_id, std::string &filename)
 {
     if (line.find("{") == std::string::npos) // Si c'est pas du json
@@ -73,6 +125,12 @@ void Server::handle_command(std::string &line, std::string &agency_id, std::stri
             auto account = read_directory("./data", account_id);
             std::cout << "Compte: " << account["acc"]["id"][account_id] << std::endl;
             response = account;
+        }
+        else if (line.substr(0, 6) == "update")
+        {
+            auto command = split(line, ' ');
+            if (command.size() != 3) return;
+            update(command[1], command[2]);
         }
         else
         {
