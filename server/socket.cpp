@@ -63,7 +63,7 @@ void Server::createData(const std::string& agency_id, std::string& line, std::st
     std::cout << "Création du fichier: " << filename << std::endl;
 }
 
-void Server::update(const std::string& agency_id, const std::string& last_write_time)
+void Server::update(const std::string& agency_id, const std::string& last_write_time, con_handle_t& con_handle)
 {
     static json output = {{"key", "value"}};
     std::filesystem::path dir_path("./data/" + agency_id);
@@ -113,7 +113,7 @@ std::vector<std::string> split(const std::string &str, char delimiter)
     return tokens;
 }
 
-void Server::handle_command(std::string &line, std::string &agency_id, std::string &filename)
+void Server::handle_command(std::string &line, std::string &agency_id, std::string &filename, con_handle_t& con_handle)
 {
     if (line.find("{") == std::string::npos) // Si on reçoit une commande
     {
@@ -131,7 +131,7 @@ void Server::handle_command(std::string &line, std::string &agency_id, std::stri
         }
         else if (command[0] == "update" && command.size() == 3)
         {
-            update(command[1], command[2]);
+            update(command[1], command[2], con_handle);
         }
         else
         {
@@ -162,7 +162,7 @@ void Server::handle_read(con_handle_t con_handle, boost::system::error_code cons
         static std::string agency_id;
         std::getline(is, line);
 
-       handle_command(line, agency_id, filename);
+       handle_command(line, agency_id, filename, con_handle);
     }
 
     if (!err)

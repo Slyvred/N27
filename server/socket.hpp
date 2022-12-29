@@ -40,8 +40,8 @@ public:
   json read_directory(const std::string &directory_path, const std::string &account_id);
   void createData(const std::string& agency_id, std::string& line, std::string& filename);
 
-  void handle_command(std::string &line, std::string &agency_id, std::string &filename);
-  void update(const std::string& agency_id, const std::string& last_write_time);
+  void handle_command(std::string &line, std::string &agency_id, std::string &filename, con_handle_t& con_handle);
+  void update(const std::string& agency_id, const std::string& last_write_time, con_handle_t& con_handle);
   void handle_read(con_handle_t con_handle, boost::system::error_code const &err, size_t bytes_transfered);
   void do_async_read(con_handle_t con_handle);
   void handle_write(con_handle_t con_handle, std::shared_ptr<std::string> msg_buffer, boost::system::error_code const &err);

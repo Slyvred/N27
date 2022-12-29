@@ -100,14 +100,14 @@ void agency::send(int from_acc, int to_acc, float amount)
 
     // On vérifie que les comptes sont valides
     if (accounts.find(from_acc) == accounts.end()) {
-        cerr << "Compte local inexistant !" << endl;
+        cerr << "Local account not found !" << endl;
         return;
     }
 
     // On vérifie que le solde permet le virement
     auto solde = accounts.at(from_acc).getSolde();
     if (solde < amount) {
-        cerr << "Solde insuffisant !" << endl;
+        cerr << "Funds are too low !" << endl;
         return;
     }
 
@@ -122,7 +122,7 @@ void agency::send(int from_acc, int to_acc, float amount)
 
         if (response.dump() == "{\"key\":\"value\"}" || response.dump() == "null") // Si on n'a pas le compte
         {
-            cerr << "Account not found" << endl;
+            cerr << "Remote account not found" << endl;
             client.Close();
             return;
         }
