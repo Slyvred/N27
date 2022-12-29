@@ -199,6 +199,21 @@ const vector<transaction> &agency::getTransactions() const
     return transactions;
 }
 
+void agency::addAccount(int uid)
+{
+    if (users.find(uid) == users.end()) // L'user n'existe pas
+        return;
+
+    auto usr = getUser(uid);
+    auto acc = account(1, 0); // On crée le compte temporaire
+
+    while (accounts.find(acc.getId()) != accounts.end()) // On vérifie que on id est unique
+        acc.setId(rand());
+    
+    usr.addAccount(acc.getId());
+    accounts.insert({acc.getId(), acc});
+}
+
 json agency::exportUsers() const
 {
     json user;
