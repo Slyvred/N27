@@ -25,17 +25,9 @@ int importId()
     auto entry = filesystem::directory_iterator(dir_path);
 
     id = entry->path().filename().string();
-    id = id.substr(1);
+    id = id.substr(1); // On retire le préfixe
     id = id.substr(0, id.length() - 5); // -5 car .json
 
-    // for (auto &entry : filesystem::directory_iterator(dir_path))
-    // {
-    //     id = entry.path().filename().string();
-
-    //     id = id.substr(1);
-    //     id = id.substr(0, id.length() - 5); // -5 car .json
-    //     break;
-    // }
     return stoi(id);
 }
 
@@ -260,11 +252,7 @@ json agency::exportAccounts() const
 
     for (auto &[id, acc] : accounts)
     {
-
         auto str_num = to_string(id);
-
-        // cout << num << endl;
-        // cout << acc << endl;
 
         account["id"][str_num]["interests"] = acc.getInterets();
         account["id"][str_num]["solde"] = acc.getSolde();
@@ -346,7 +334,6 @@ void agency::importAcounts()
 
     for (auto &it : obj["id"])
     {
-        //cout << it << endl;
         auto id = it["id"];
         auto interets = it["interests"];
         auto solde = it["solde"];
@@ -379,8 +366,6 @@ void agency::importUsers()
 
     for (auto &it : obj["id"])
     {
-        //cout << it << endl;
-
         // On récupère les infos
         inf.addr = it["infos"]["adresse"];
         inf.nom = it["infos"]["nom"];
@@ -467,6 +452,17 @@ void agency::update()
 {
     // Si la transaction a 48 heures ou plus on la supprime
     transactions.erase(remove_if(transactions.begin(), transactions.end(), isTooOld), transactions.end());
+
+    for (auto& [id, acc] : accounts)
+    {
+        auto interets = acc.getInterets();
+        auto solde = acc.getSolde();
+
+        if (interets <= 1.0) continue;
+
+        acc.setSolde(solde * interets);
+    }
+    
 }
 
 int agency::getId() const

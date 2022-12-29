@@ -3,92 +3,51 @@
 
 Server::Server() : m_ioservice(), m_acceptor(m_ioservice), m_connections() {}
 
-/*json Server::read_directory(const std::string &directory_path, const std::string &account_id)
-{
-    DIR *dir;
-    struct dirent *ent;
-    static json output = {{"not", "found"}};
-    if ((dir = opendir(directory_path.c_str())) == NULL)
-    {
-        std::cerr << "Impossible d'ouvrir le répertoire" << std::endl;
-    }
-
-    // Répertoire ouvert avec succès
-    while ((ent = readdir(dir)) != NULL)
-    {
-        if (ent->d_type == DT_DIR)
-        {
-            // C'est un répertoire, on le parcourt récursivement
-            std::string subdir_path = directory_path + "/" + std::string(ent->d_name);
-            if (std::string(ent->d_name) != "." && std::string(ent->d_name) != "..")
-            {
-                read_directory(subdir_path, account_id);
-            }
-        }
-        else
-        {
-            // C'est un fichier, on lit son contenu
-            std::string file_path = directory_path + "/" + std::string(ent->d_name);
-            std::ifstream file(file_path);
-            if (file_path.find("A") == std::string::npos || !file.is_open())
-                continue; // Si ce n'est pas un fichier de compte ou si on n'arrive pas à l'ouvrir
-
-            json obj = json::parse(file);
-            file.close();
-            for (auto &it : obj["id"])
-            {
-                if (it["id"].dump() == account_id)
-                {
-                    output = it;
-                    break;
-                }
-            }
-        }
-    }
-    closedir(dir);
-    return output;
-}*/
-
-
 json Server::read_directory(const std::string &directory_path, const std::string &account_id)
 {
     static json output = {{"key", "value"}};
     std::filesystem::path dir_path(directory_path);
+
     if (!std::filesystem::is_directory(dir_path))
     {
         std::cerr << "Impossible d'ouvrir le répertoire" << std::endl;
         return output;
     }
 
+    if (std::filesystem::is_empty(dir_path))
+    {
+        std::cerr << "Répertoire vide" << std::endl;
+        return output;
+    }
+
     for (const auto &entry : std::filesystem::recursive_directory_iterator(dir_path))
     {
-        if (entry.is_regular_file())
+        if (!entry.is_regular_file())
+            continue;
+
+        std::string file_path = entry.path().string();
+        std::string filename = entry.path().filename().string();
+        filename = filename.substr(0, filename.length() - 5); // .json
+
+        if (file_path.find("A") == std::string::npos)
+            continue; // Si ce n'est pas un fichier de compte
+
+        std::ifstream file(file_path);
+        if (!file.is_open())
+            continue; // Si on n'arrive pas à ouvrir le fichier
+
+        json obj = json::parse(file);
+        file.close();
+        output = {{"file", filename}};
+        for (auto &it : obj["id"])
         {
-            std::string file_path = entry.path().string();
-            std::string filename = entry.path().filename().string();
-            filename = filename.substr(0, filename.length() - 5); // .json
-
-            if (file_path.find("A") == std::string::npos)
-                continue; // Si ce n'est pas un fichier de compte
-
-            std::ifstream file(file_path);
-            if (!file.is_open())
-                continue; // Si on n'arrive pas à ouvrir le fichier
-
-            json obj = json::parse(file);
-            file.close();
-            output = {{"file", filename}};
-            for (auto &it : obj["id"])
+            if (it["id"].dump() == account_id)
             {
-                if (it["id"].dump() == account_id)
-                {
-                    output["acc"] = obj;
-                    return output;
-                }
+                output["acc"] = obj;
+                return output;
             }
         }
     }
-
     return output;
 }
 
@@ -144,36 +103,6 @@ void Server::handle_read(con_handle_t con_handle, boost::system::error_code cons
         static std::string agency_id;
         std::getline(is, line);
 
-        /*
-        if (line.find("{") == std::string::npos) // Si c'est pas du json
-        {
-            if (line.substr(0, 3) == "get") // Si on a besoin d'un compte qui n'appartient pas à l'agence décentralisée
-            {
-                std::string account_id = line.substr(4);
-                std::cout << "Compte cherché: " << account_id << std::endl;
-
-                auto account = read_directory("./data", account_id);
-                std::cout << "Compte: " << account["acc"]["id"][account_id] << std::endl;
-                response = account;
-            }
-            else
-            {
-                agency_id = line.substr(1);
-                createData(agency_id, line, filename);
-            }
-        }
-        else
-        {
-            json obj = json::parse(line);
-            std::ofstream file(filename);
-            if (file.is_open())
-            {
-                file << setw(2) << obj << std::endl;
-                file.close();
-            }
-            std::cout << "Fichier reçu" << std::endl;
-        }
-        */
        handle_command(line, agency_id, filename);
     }
 
