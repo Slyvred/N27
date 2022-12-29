@@ -6,6 +6,7 @@
 #include <random>
 
 account::account(float interets, float solde) : interets(interets), solde(solde) {
+    if (interets < 1.0) interets = 1.0;
     id = rand(); // Id temporaire
 }
 

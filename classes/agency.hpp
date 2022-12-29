@@ -37,7 +37,7 @@ public:
     agency();
 
     void createUser(infos& infos, int n_accounts);
-    void addAccount(int uid);
+    void addAccount(int uid, float solde, float interets);
     void deleteUser(int id);
     user& getUser(int id);
     void send(int from_acc, int to_acc, float amount);
