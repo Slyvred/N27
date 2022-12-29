@@ -115,21 +115,22 @@ std::vector<std::string> split(const std::string &str, char delimiter)
 
 void Server::handle_command(std::string &line, std::string &agency_id, std::string &filename)
 {
-    if (line.find("{") == std::string::npos) // Si c'est pas du json
+    if (line.find("{") == std::string::npos) // Si on reçoit une commande
     {
-        if (line.substr(0, 3) == "get") // Si on a besoin d'un compte qui n'appartient pas à l'agence décentralisée
+        std::cout << "command: " << line << std::endl;
+        auto command = split(line, ' ');
+
+        if (command[0] == "get" && command.size() == 2) // Si on a besoin d'un compte qui n'appartient pas à l'agence décentralisée
         {
-            std::string account_id = line.substr(4);
+            std::string account_id = command[1];
             std::cout << "Compte cherché: " << account_id << std::endl;
 
             auto account = read_directory("./data", account_id);
             std::cout << "Compte: " << account["acc"]["id"][account_id] << std::endl;
             response = account;
         }
-        else if (line.substr(0, 6) == "update")
+        else if (command[0] == "update" && command.size() == 3)
         {
-            auto command = split(line, ' ');
-            if (command.size() != 3) return;
             update(command[1], command[2]);
         }
         else
@@ -138,7 +139,7 @@ void Server::handle_command(std::string &line, std::string &agency_id, std::stri
             createData(agency_id, line, filename);
         }
     }
-    else
+    else // Si on reçoit du json
     {
         json obj = json::parse(line);
         std::ofstream file(filename);

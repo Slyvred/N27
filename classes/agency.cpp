@@ -99,14 +99,17 @@ void agency::send(int from_acc, int to_acc, float amount)
 {
 
     // On vérifie que les comptes sont valides
-    if (accounts.find(from_acc) == accounts.end())
+    if (accounts.find(from_acc) == accounts.end()) {
+        cerr << "Compte local inexistant !" << endl;
         return;
+    }
 
     // On vérifie que le solde permet le virement
     auto solde = accounts.at(from_acc).getSolde();
-    if (solde < amount)
+    if (solde < amount) {
+        cerr << "Solde insuffisant !" << endl;
         return;
-
+    }
 
     // Si on ne trouve pas le compte, on fait la requête à l'agence centrale
     if (accounts.find(to_acc) == accounts.end())
@@ -135,7 +138,6 @@ void agency::send(int from_acc, int to_acc, float amount)
 
         // Envoi accouts distant
         client.SendJSON(response["file"], response["acc"]);
-
         client.Close();
 
         cout << "Sent " << amount << "$ to " << to_acc << " from " << from_acc << endl;
