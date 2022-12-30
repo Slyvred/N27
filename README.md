@@ -24,7 +24,7 @@ Ce projet est développé entièrement en C++.
 | ✅ | ✅ | ✅ | ✅ |
 
 ## Fonctionnalités actuelles
-- Interface avec QT (non reliée à quoi que ce soit).
+- Interface avec QT
 - Threads.
 - Socket (client et serveur asynchrone).
 - "Bases de données" en json.
