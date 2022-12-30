@@ -33,7 +33,6 @@ Ce projet est développé entièrement en C++.
 - Les comptes ont un taux d'intérêt.
 - Toutes les 10 secondes (court pour pouvoir déboguer) chaque agence envoie sa base de données à l'agence centrale.
 - Avec la requête "get {acountId}", l'agence centrale va chercher un compte donné dans ses bases de données et renvoyer le json correspondant.
-- Commandes "send" et "deposit" pour envoyer 100$ et déposer 1000$ vers des comptes aléatoires (pour debug car nous n'avons pas d'interface).
 - La commande "update {agencyId} {timestamp}" permet de mettre à jour la base de données d'une agence, l'agence centrale va renvoyer sa base donnée si elle a été modifié plus récemment que celle de locale de l'agence en question en comparant les deux timestamp d'écriture.
 
 ## Schéma explicatif (backend)
