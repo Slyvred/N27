@@ -65,6 +65,7 @@ void agency::createUser(infos &infos, int n_accounts)
     }
     // On ajoute l'utilisateur dans la base de données
     users.insert({tmp.getId(), tmp});
+    idOfNewUser = tmp.getId();
 }
 
 user &agency::getUser(int id)
@@ -222,6 +223,7 @@ void agency::addAccount(int uid, float solde, float interets)
     
     usr.addAccount(acc.getId());
     accounts.insert({acc.getId(), acc});
+    idOfNewAcc = acc.getId();
 }
 
 json agency::exportUsers() const

@@ -41,9 +41,9 @@ void MainApp::on_connection_clicked()
 
         float soldetotal = 0.0;
 
-        for(int value : UserAcc) {
-            soldetotal += ag.getAccount(value).getSolde();
-        }
+    for(int value : UserAcc) {
+        soldetotal += ag.getAccount(value).getSolde();
+    }
 
      ui->sold_tofill->setText(QString::number(soldetotal));
 
@@ -57,7 +57,6 @@ void MainApp::on_connection_clicked()
 
 void MainApp::on_inscription_clicked()
 {
-
     ui->stackedWidget->setCurrentIndex(1);
 }
 
@@ -232,7 +231,7 @@ void MainApp::on_createAccount_clicked()
     else
         interet = 1.0f; // 0%
 
-    ag.addAccount(userID, interet, solde);
+    ag.addAccount(userID, solde, interet);
 
     ag.getUser(userID).addAccount(ag.idOfNewAcc);
 

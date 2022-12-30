@@ -35,7 +35,7 @@ public slots:
             auto response = client.GetResponse();
 
             client.Close();
-            QThread::sleep(10);
+            QThread::sleep(60);
         }
     }
 
