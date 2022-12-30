@@ -21,10 +21,10 @@ Ce projet est développé entièrement en C++.
 
 | structures du backend | mise en place des sockets | mise en place du système de données | interface graphique |
 | :------- | :------- | :-------- | :------ |
-| ✅ | ✅ | ✅ | :pencil2: |
+| ✅ | ✅ | ✅ | ✅ |
 
 ## Fonctionnalités actuelles
-- Interface avec QT (non reliée à quoi que ce soit).
+- Interface avec QT
 - Threads.
 - Socket (client et serveur asynchrone).
 - "Bases de données" en json.
@@ -33,15 +33,30 @@ Ce projet est développé entièrement en C++.
 - Les comptes ont un taux d'intérêt.
 - Toutes les 10 secondes (court pour pouvoir déboguer) chaque agence envoie sa base de données à l'agence centrale.
 - Avec la requête "get {acountId}", l'agence centrale va chercher un compte donné dans ses bases de données et renvoyer le json correspondant.
-- Commandes "send" et "deposit" pour envoyer 100$ et déposer 1000$ vers des comptes aléatoires (pour debug car nous n'avons pas d'interface).
 - La commande "update {agencyId} {timestamp}" permet de mettre à jour la base de données d'une agence, l'agence centrale va renvoyer sa base donnée si elle a été modifié plus récemment que celle de locale de l'agence en question en comparant les deux timestamp d'écriture.
 
 ## Schéma explicatif (backend)
 ## Aperçu de l'interface
-![image](https://user-images.githubusercontent.com/52755677/209443922-85e1b8f9-366c-4e63-a9ce-40fe61a302af.png)
-![image](https://user-images.githubusercontent.com/52755677/209443934-3319f12c-d50c-474a-b15f-0cbb8f2b2b05.png)
-![image](https://user-images.githubusercontent.com/52755677/209443959-e35ad5ce-d3a6-404a-883f-7850c806680b.png)
-![image](https://user-images.githubusercontent.com/52755677/209443976-1d2a5b22-fb2d-430d-8c8d-4151a820322a.png)
+![image](https://user-images.githubusercontent.com/52755677/210112491-b7a3fec2-fde3-4d4a-9d2f-d299d5c9728f.png)
+![image](https://user-images.githubusercontent.com/52755677/210112471-f144f40b-8c7c-4248-b67a-89fd59277561.png)
+![image](https://user-images.githubusercontent.com/52755677/210112554-98034477-097a-4e14-a6bb-ef751591d9e3.png)
+![image](https://user-images.githubusercontent.com/52755677/210112560-2e54f5b6-abd8-47f8-a2a5-aa9b82b303da.png)
+![image](https://user-images.githubusercontent.com/52755677/210112580-95587d4a-fece-4817-b15e-68283af76df4.png)
+![image](https://user-images.githubusercontent.com/52755677/210112589-12f20db5-78b5-49c1-a2a4-04e2532986fc.png)
+![image](https://user-images.githubusercontent.com/52755677/210112613-4add1671-e720-4565-aea7-c52d55af9527.png)
+![image](https://user-images.githubusercontent.com/52755677/210112625-0aa7b2c2-afaf-4b88-9078-3f687e488a79.png)
+![image](https://user-images.githubusercontent.com/52755677/210112642-413c440b-b5d8-41bc-9096-9cf007cd9faa.png)
+![image](https://user-images.githubusercontent.com/52755677/210112650-a203240b-9c2c-4705-a212-7b49dd57f0e4.png)
+
+
+
+
+
+
+
+
+
+
 
 
 
