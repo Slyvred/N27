@@ -43,8 +43,10 @@ const int &user::getAccount(int index) const {
 
 void user::addAccount(int id) {
     // Si le compte n'existe pas déjà
-    if (find(accounts.begin(), accounts.end(), id) == accounts.end())
+    if (find(accounts.begin(), accounts.end(), id) == accounts.end()) {
         accounts.push_back(id);
+        n_accounts++;
+    }
 }
 
 ostream& operator<<(ostream& os, const user& user)

@@ -11,24 +11,39 @@ void update(agency& agence)
 {
     while (true)
     {
+        auto str_id = to_string(agence.getId());
         agence.update();
 
         Client client("localhost", "8080");
         client.Connect();
 
+
+        /*for (const auto &entry : std::filesystem::directory_iterator("data/"))
+        {
+            if (!entry.is_regular_file())
+                continue;
+            
+            auto last_time_write = abs(entry.last_write_time().time_since_epoch().count());
+
+            auto request = "update " + str_id + " " + to_string(last_time_write);
+            client.SendString(request);
+            auto response = client.GetResponse();
+            cout << "Received response: " << response.dump() << endl;
+        }*/
+
         auto usr_obj = agence.exportUsers();
-        client.SendJSON("U" + to_string(agence.getId()), usr_obj); // Envoi user
+        client.SendJSON("U" + str_id, usr_obj); // Envoi user
         //auto response = client.GetResponse();
         // std::cout << "Received response: " << response.dump() << std::endl;
 
         auto tra_obj = agence.exportTransactions();
-        client.SendJSON("T" + to_string(agence.getId()), tra_obj); // Envoi transactions
+        client.SendJSON("T" + str_id, tra_obj); // Envoi transactions
         //response = client.GetResponse();
         // std::cout << "Received response: " << response.dump() << std::endl;
 
 
         auto acc_obj = agence.exportAccounts();
-        client.SendJSON("A" + to_string(agence.getId()), acc_obj); // Envoi accounts
+        client.SendJSON("A" + str_id, acc_obj); // Envoi accounts
         auto response = client.GetResponse();
         //std::cout << "Received response: " << response.dump() << std::endl;
 
@@ -65,7 +80,7 @@ void doWork(agency& agence)
                 break;
             }*/
 
-            agence.send(130456844, 1043608233, 100);
+            agence.send(1021266762, 118926120, 100);
             //cout << "Sent " << amount << "$" << endl;
         }
         else if (input == "deposit")
@@ -79,6 +94,10 @@ void doWork(agency& agence)
                 break;
             }
             cout << "Deposited " << amount << "$" << endl;
+        }
+        else if (input == "add")
+        {
+            agence.addAccount(1620888699, 667, 1.02);
         }
         else cerr << "Unknown command" << endl;
     }
