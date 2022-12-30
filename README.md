@@ -35,7 +35,10 @@ Ce projet est développé entièrement en C++.
 - Avec la requête "get {acountId}", l'agence centrale va chercher un compte donné dans ses bases de données et renvoyer le json correspondant.
 - La commande "update {agencyId} {timestamp}" permet de mettre à jour la base de données d'une agence, l'agence centrale va renvoyer sa base donnée si elle a été modifié plus récemment que celle de locale de l'agence en question en comparant les deux timestamp d'écriture.
 
-## Schéma explicatif (backend)
+## Informations importantes
+Pour faire fonctionner le projet, ouvrez N27UI dans QT creator, vérifiez bien que le chemin de build correspond au dossier N27UI/build.
+- Lancez le serveur asychrone (l'agence centrale)
+- Lancez l'interface qui fait office de client et d'agence décentralisée
 ## Aperçu de l'interface
 ![image](https://user-images.githubusercontent.com/52755677/210112491-b7a3fec2-fde3-4d4a-9d2f-d299d5c9728f.png)
 ![image](https://user-images.githubusercontent.com/52755677/210112471-f144f40b-8c7c-4248-b67a-89fd59277561.png)
