@@ -33,7 +33,8 @@ private:
     int id;
     int n_users;
 public:
-
+    int idOfNewUser;
+    size_t idOfNewAcc;
     agency();
 
     void createUser(infos& infos, int n_accounts);
